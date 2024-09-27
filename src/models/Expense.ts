@@ -45,7 +45,7 @@ export class ExpenseSummary {
 }
 
 // typically a CRUD service
-export class ExpenseService {
+export class MockExpenseService {
   expenses: Expense[];
 
   constructor(expenses: Expense[]) {
@@ -60,8 +60,11 @@ export class ExpenseService {
   //   getExpense(id: number): Expense {
 
   //   }
-  // create
+  createExpense(expense: Expense) {
+    this.expenses.push(expense)
+  }
   // update
+  
   // delete
 }
 
@@ -86,7 +89,7 @@ export class ExpenseSummarizer {
     }
 
     // Percentage of 1 category per month / total sum
-    const summaries: { category: string; sum: number; percentage: number }[] =
+    const byCategory: { category: string; sum: number; percentage: number }[] =
       [];
 
     // 0 / 0 = NaN. Add code to handle 0s?
@@ -96,7 +99,7 @@ export class ExpenseSummarizer {
           ? 0
           : Math.round((monthlySums[x] / monthlySumsTotal) * 100);
 
-      summaries.push({
+      byCategory.push({
         category: x,
         sum: parseFloat(monthlySums[x].toFixed(2)),
         percentage: percentage,
@@ -104,7 +107,7 @@ export class ExpenseSummarizer {
     }
 
     return {
-      summaries: summaries,
+      byCategory: byCategory,
       totalMonthlySum: parseFloat(monthlySumsTotal.toFixed(2)),
       totalAnnualSum: parseFloat((monthlySumsTotal * 12).toFixed(2)),
     };
