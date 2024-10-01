@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Frequency, Expense } from "../models/Expense";
 
 interface NewExpenseProps {
-  expenseSvc: ExpenseService;
+  expenseSvc: ExpenseService
+  //type of function
+  setAllExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 }
 
 interface ExpenseService {
@@ -10,7 +12,8 @@ interface ExpenseService {
     createExpense(expense: Expense): void
 }
 
-const NewExpense = ({ expenseSvc }: NewExpenseProps) => {
+const NewExpense = ({ expenseSvc, setAllExpenses }: NewExpenseProps) => {
+
   const [formData, setFormData] = useState({
     label: "",
     amount: 0,
@@ -23,13 +26,17 @@ const NewExpense = ({ expenseSvc }: NewExpenseProps) => {
     const { name, value } = event.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === 'amount' ? parseInt(value) : value
     }));
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+    
     expenseSvc.createExpense(formData);
+    const data = expenseSvc.getExpenses()
+    setAllExpenses([...data])
+    
     reset();
   };
 

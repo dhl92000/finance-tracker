@@ -60,11 +60,27 @@ export class MockExpenseService {
   //   getExpense(id: number): Expense {
 
   //   }
-  createExpense(expense: Expense) {
-    this.expenses.push(expense)
+  createExpense(expenseData: {
+    label: string;
+    amount: number;
+    owner: string;
+    frequency: Frequency;
+    category: string;
+  }) {
+    const newExpense = new Expense(
+      expenseData.label,
+      expenseData.amount,
+      expenseData.owner,
+      expenseData.frequency,
+      expenseData.category
+    );
+
+    this.expenses.push(newExpense);
+    // console.log(newExpense);
+    // console.log(this.expenses);
   }
   // update
-  
+
   // delete
 }
 
@@ -94,6 +110,8 @@ export class ExpenseSummarizer {
 
     // 0 / 0 = NaN. Add code to handle 0s?
     for (const x in monthlySums) {
+      console.log(x)
+      console.log(monthlySums[x])
       const percentage =
         monthlySums[x] === 0
           ? 0
