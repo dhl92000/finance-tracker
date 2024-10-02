@@ -4,7 +4,7 @@ import { expenses } from "./data/Data";
 import CategoryItem from "./components/CategoryItem";
 import NewExpense from "./pages/NewExpense";
 import ExpenseItem from "./components/ExpenseItem";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
   // CRUD service that takes an array of expenses
@@ -18,7 +18,7 @@ function App() {
   const summary = expenseSummarizer.summarizeExpenses(expenseSvc.getExpenses())
 
   return (
-    <>
+    <div>
       <div>
         <h1>Finance Tracker</h1>
       </div>
@@ -41,11 +41,11 @@ function App() {
       </div>
 
       <div>
-        {allExpenses.map((item, index) => (
-          <ExpenseItem key={index} name={item.label} />
+        {allExpenses.map((item) => (
+          <ExpenseItem key={item.id} item={item} expenseSvc={expenseSvc} />
         ))}
       </div>
-    </>
+    </div>
   );
 }
 

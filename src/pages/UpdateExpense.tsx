@@ -1,51 +1,45 @@
 import { useState } from "react";
-import { Frequency, Expense } from "../models/Expense";
+import { Expense, Frequency } from "../models/Expense";
 
-interface NewExpenseProps {
-  expenseSvc: ExpenseService
-  //type of function
-  setAllExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
+interface UpdateModalProps {
+  onClose: () => void;
+  item: Expense;
+  expenseSvc: ExpenseService;
 }
 
 interface ExpenseService {
-    getExpenses(): Expense[]
-    createExpense(expense: Expense): void
+  getExpenses(): Expense[];
+  updateExpense(expense: Expense): void;
 }
 
-const NewExpense = ({ expenseSvc, setAllExpenses }: NewExpenseProps) => {
-
+// modal content / update expense form
+const UpdateExpense = ({ onClose, item, expenseSvc }: UpdateModalProps) => {
   const [formData, setFormData] = useState({
-    id: Math.floor(Math.random()*10),
-
-    label: "",
-    amount: 0,
-    owner: "User",
-    frequency: Frequency.Monthly,
-    category: "",
+    id: item.id,
+    label: item.label,
+    amount: item.amount,
+    owner: item.owner,
+    frequency: item.frequency,
+    category: item.category,
   });
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    expenseSvc.updateExpense(formData);
+    reset();
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === 'amount' ? parseInt(value) : value
+      [name]: name === "amount" ? parseInt(value) : value,
     }));
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    
-    expenseSvc.createExpense(formData);
-    const data = expenseSvc.getExpenses()
-    setAllExpenses([...data])
-    
-    reset();
   };
 
   const reset = () => {
     setFormData({
-      id: 0, 
-
+      id: 0,
       label: "",
       amount: 0,
       owner: "User",
@@ -55,7 +49,12 @@ const NewExpense = ({ expenseSvc, setAllExpenses }: NewExpenseProps) => {
   };
 
   return (
-    <form className="formDiv" onSubmit={handleSubmit}>
+    // <div>
+    //     updating the expense
+    //     <button> Update</button>
+    //     <button onClick={onClose}> Cancel </button>
+    // </div>
+    <form onSubmit={handleSubmit}>
       <label>
         Item Name:
         <input name="label" onChange={handleChange} value={formData.label} />
@@ -103,10 +102,10 @@ const NewExpense = ({ expenseSvc, setAllExpenses }: NewExpenseProps) => {
       </label>
       <br />
 
-      <button onClick={reset}>Clear</button>
-      <button type="submit">Add</button>
+      <button onClick={onClose}> Cancel </button>
+      <button type="submit">Update</button>
     </form>
   );
 };
 
-export default NewExpense;
+export default UpdateExpense;

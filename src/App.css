@@ -51,6 +51,11 @@
   width: 50%;
   padding: 8px;
 }
+
+.expenseItemDiv {
+  border: 1px orange solid;
+}
+
 .formDiv {
   border: 1px orange solid;
 }

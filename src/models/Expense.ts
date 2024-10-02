@@ -1,5 +1,7 @@
 export class Expense {
   // Properties
+  id: number
+
   label: string;
   amount: number;
   owner: string;
@@ -7,12 +9,16 @@ export class Expense {
   category: string;
 
   constructor(
+    id: number,
+
     label: string,
     amount: number,
     owner: string,
     frequency: Frequency,
     category: string
   ) {
+    this.id = id
+
     this.label = label;
     this.amount = amount;
     this.owner = owner;
@@ -47,20 +53,19 @@ export class ExpenseSummary {
 // typically a CRUD service
 export class MockExpenseService {
   expenses: Expense[];
-
   constructor(expenses: Expense[]) {
     this.expenses = expenses;
   }
 
-  // get expenses in an array
   getExpenses(): Expense[] {
-    // return [foo]
     return this.expenses;
   }
   //   getExpense(id: number): Expense {
 
   //   }
   createExpense(expenseData: {
+    id: number
+    
     label: string;
     amount: number;
     owner: string;
@@ -68,20 +73,33 @@ export class MockExpenseService {
     category: string;
   }) {
     const newExpense = new Expense(
+      expenseData.id,
+
       expenseData.label,
       expenseData.amount,
       expenseData.owner,
       expenseData.frequency,
       expenseData.category
-    );
-
+    )
     this.expenses.push(newExpense);
-    // console.log(newExpense);
-    // console.log(this.expenses);
+   // console.log(newExpense)
   }
   // update
-
+  updateExpense(data: Expense) {
+    const indexToUpdate = this.expenses.findIndex((el) => el.id === data.id)
+    this.expenses[indexToUpdate] = {
+      id: data.id,
+      label: data.label,
+      amount: data.amount,
+      owner: data.owner,
+      frequency: data.frequency,
+      category: data.category
+    }
+  }
+  
   // delete
+
+
 }
 
 export class ExpenseSummarizer {
@@ -110,8 +128,8 @@ export class ExpenseSummarizer {
 
     // 0 / 0 = NaN. Add code to handle 0s?
     for (const x in monthlySums) {
-      console.log(x)
-      console.log(monthlySums[x])
+      // console.log(x)
+      // console.log(monthlySums[x])
       const percentage =
         monthlySums[x] === 0
           ? 0
