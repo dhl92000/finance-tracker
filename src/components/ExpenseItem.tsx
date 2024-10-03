@@ -2,13 +2,6 @@ import { createPortal } from "react-dom";
 import UpdateExpense from "../pages/UpdateExpense";
 import { useState } from "react";
 import { Expense } from "../models/Expense";
-// import {
-//   TableHeader,
-//   TableBody,
-//   TableColumn,
-//   TableRow,
-//   TableCell,
-// } from "@nextui-org/table";
 
 interface expenseItemProps {
   key: number;

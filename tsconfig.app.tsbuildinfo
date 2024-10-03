@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/categoryitem.tsx","./src/components/expenseitem.tsx","./src/components/header.tsx","./src/data/data.ts","./src/models/expense.ts","./src/pages/newexpense.tsx","./src/pages/updateexpense.tsx"],"errors":true,"version":"5.6.2"}

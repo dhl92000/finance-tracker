@@ -6,10 +6,11 @@ import {
 } from "./models/Expense";
 import { expenses } from "./data/Data";
 import CategoryItem from "./components/CategoryItem";
-import NewExpense from "./pages/NewExpense";
-import ExpenseItem from "./components/ExpenseItem";
+import Header from "./components/Header";
+// import NewExpense from "./pages/NewExpense";
+// import ExpenseItem from "./components/ExpenseItem";
 import { useState, useCallback } from "react";
-
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import {
   Table,
   TableHeader,
@@ -17,8 +18,8 @@ import {
   TableColumn,
   TableRow,
   TableCell,
-  getKeyValue,
 } from "@nextui-org/table";
+import { Tabs, Tab } from "@nextui-org/tabs";
 
 function App() {
   // CRUD service that takes an array of expenses
@@ -54,6 +55,7 @@ function App() {
     },
   ];
 
+  // Custom cell for monthly/yearly value
   const renderCell = useCallback((item: Expense, columnKey: keyof Expense) => {
     const cellValue = item[columnKey as keyof Expense];
     switch (columnKey) {
@@ -71,43 +73,46 @@ function App() {
 
   return (
     <>
-      <div className="mainHeader">
-        <h1>Finance Tracker</h1>
-      </div>
-      
-      <div className="appBody">
-        <div className="expensesDiv">
-          {/* {allExpenses.map((item) => (
-          <ExpenseItem
-            key={item.id}
-            item={item}
-            expenseSvc={expenseSvc}
-            setAllExpenses={setAllExpenses}
-          />
-        ))} */}
-          <Table aria-label="Complete expenses table">
-            <TableHeader columns={columns}>
-              {columns.map((column) => (
-                <TableColumn key={column.key}>{column.label}</TableColumn>
-              ))}
-            </TableHeader>
+      <Header/>
+        <div className="flex w-full flex-col">
+          <Tabs aria-label="Complete expenses table">
+            <Tab title="Expenses">
+              <Card>
+                <CardBody>
+                  <Table aria-label="Complete expenses table">
+                    <TableHeader columns={columns}>
+                      {columns.map((column) => (
+                        <TableColumn key={column.key}>
+                          {column.label}
+                        </TableColumn>
+                      ))}
+                    </TableHeader>
 
-            {/* if columnKey is equal to 1, display "Monthly" , if 12, "Yearly" */}
-            <TableBody>
-              {allExpenses.map((row) => (
-                <TableRow key={row.id}>
-                  {(columnKey) => (
-                    // <TableCell>{getKeyValue(row, columnKey)}</TableCell>
-                    <TableCell>{renderCell(row, columnKey)}</TableCell>
-                  )}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                    <TableBody>
+                      {allExpenses.map((row) => (
+                        <TableRow key={row.id}>
+                          {(columnKey) => (
+                            <TableCell>{renderCell(row, columnKey)}</TableCell>
+                          )}
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </CardBody>
+              </Card>
+            </Tab>
+            <Tab title="Income">
+              <Card>
+                <CardBody>
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur.
+                </CardBody>
+              </Card>
+            </Tab>
+          </Tabs>
         </div>
-
-        {/* Move to own for creating expenses page */}
-        {/* <NewExpense expenseSvc={expenseSvc} setAllExpenses={setAllExpenses} /> */}
 
         <div className="summaryDiv">
           <h3>Summary</h3>
@@ -124,7 +129,8 @@ function App() {
           <p>Total Monthly Expenses: ${summary.totalMonthlySum}</p>
           <p>Total Annual Expenses: ${summary.totalAnnualSum}</p>
         </div>
-      </div>
+
+
     </>
   );
 }
