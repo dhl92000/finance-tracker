@@ -96,9 +96,13 @@ export class MockExpenseService {
       category: data.category
     }
   }
-  
-  // delete
 
+  // delete
+  deleteExpense(item: Expense) {
+    // find the expense with this index
+    const indexToDelete = this.expenses.findIndex((el) => el.id === item.id)
+    this.expenses.splice(indexToDelete, 1)
+  }
 
 }
 

@@ -34,18 +34,15 @@ const NewExpense = ({ expenseSvc, setAllExpenses }: NewExpenseProps) => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    
     expenseSvc.createExpense(formData);
     const data = expenseSvc.getExpenses()
     setAllExpenses([...data])
-    
     reset();
   };
 
   const reset = () => {
     setFormData({
       id: 0, 
-
       label: "",
       amount: 0,
       owner: "User",

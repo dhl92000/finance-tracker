@@ -2,35 +2,57 @@ import { createPortal } from "react-dom";
 import UpdateExpense from "../pages/UpdateExpense";
 import { useState } from "react";
 import { Expense } from "../models/Expense";
+// import {
+//   TableHeader,
+//   TableBody,
+//   TableColumn,
+//   TableRow,
+//   TableCell,
+// } from "@nextui-org/table";
 
 interface expenseItemProps {
   key: number;
-  item: Expense
-  expenseSvc: ExpenseService
+  item: Expense;
+  setAllExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
+  expenseSvc: ExpenseService;
 }
 
 interface ExpenseService {
-    getExpenses(): Expense[]
-    updateExpense(expense: Expense): void
+  getExpenses(): Expense[];
+  updateExpense(expense: Expense): void;
+  deleteExpense(expense: Expense): void;
 }
 
-// when I press edit button, I want a modal to pop up
-// modal has: form with all the expense fields and 'update' button
-
 // props destructured here {}, prop type defined above
-const ExpenseItem = ({  key, item, expenseSvc }: expenseItemProps) => {
+const ExpenseItem = ({
+  key,
+  item,
+  expenseSvc,
+  setAllExpenses,
+}: expenseItemProps) => {
   const [showModal, setShowModal] = useState(false);
+
+  const deleteExpense = () => {
+    expenseSvc.deleteExpense(item);
+    const data = expenseSvc.getExpenses();
+    setAllExpenses([...data]);
+  };
 
   return (
     <>
       <div className="expenseItemDiv" key={key}>
         <h2>{item.label}</h2>
         <button onClick={() => setShowModal(true)}>Edit</button>
+        <button onClick={deleteExpense}>Delete</button>
       </div>
 
       {showModal &&
         createPortal(
-          <UpdateExpense onClose={() => setShowModal(false)} item={item} expenseSvc={expenseSvc}/>,
+          <UpdateExpense
+            onClose={() => setShowModal(false)}
+            item={item}
+            expenseSvc={expenseSvc}
+          />,
           document.body
         )}
     </>
