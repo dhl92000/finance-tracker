@@ -31,7 +31,7 @@ function App() {
   return (
     <>
       <Header/>
-      <ItemsTable allExpenses={allExpenses}/>
+      <ItemsTable allExpenses={allExpenses} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
 
         <div className="summaryDiv">
           <h3>Summary</h3>
