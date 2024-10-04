@@ -10,7 +10,7 @@ import Header from "./components/Header";
 import ItemsTable from "./pages/ItemsTable";
 // import NewExpense from "./pages/NewExpense";
 // import ExpenseItem from "./components/ExpenseItem";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 
 
 function App() {
@@ -23,10 +23,6 @@ function App() {
   const [allExpenses, setAllExpenses] = useState(expenseSvc.getExpenses());
   // use the summarizer on the expenses to return a summary
   const summary = expenseSummarizer.summarizeExpenses(expenseSvc.getExpenses());
-
-
-
-
 
   return (
     <>

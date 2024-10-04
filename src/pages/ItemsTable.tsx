@@ -1,9 +1,11 @@
-
+import { Button } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { DeleteIcon } from "../data/DeleteIcon";
 import { EditIcon } from "../data/EditIcon";
+import expenseColumns from "../data/ExpenseColumns";
 import { Expense, MockExpenseService } from "../models/Expense";
-import { useCallback } from "react";
+import { Input } from "@nextui-org/input";
+import { RadioGroup, Radio } from "@nextui-org/radio";
 import {
   Table,
   TableHeader,
@@ -13,48 +15,33 @@ import {
   TableCell,
 } from "@nextui-org/table";
 import { Tabs, Tab } from "@nextui-org/tabs";
-
-const columns = [
-  {
-    key: "label",
-    label: "ITEM",
-  },
-  {
-    key: "amount",
-    label: "AMOUNT",
-  },
-  {
-    key: "frequency",
-    label: "FREQUENCY",
-  },
-  {
-    key: "category",
-    label: "CATEGORY",
-  },
-  {
-    key: "owner",
-    label: "OWNER",
-  },
-  {
-    key: "actions",
-    label: "ACTIONS",
-  },
-];
-
+import { useCallback } from "react";
+import ItemsDiv from "./ItemsDiv";
+import { PlusIcon } from "../data/PlusIcon";
+import { useDisclosure } from "@nextui-org/react";
+import NewExpenseModal from "../components/NewExpenseModal";
 interface ItemsTableProps {
   allExpenses: Expense[];
-  expenseSvc: MockExpenseService
+  expenseSvc: MockExpenseService;
   setAllExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 }
 
-const ItemsTable = ({ allExpenses, expenseSvc,  setAllExpenses }: ItemsTableProps) => {
-    const handleDelete = (item: Expense) => {
-        expenseSvc.deleteExpense(item)
-        const data = expenseSvc.getExpenses();
-        setAllExpenses([...data]);
-    }
+const ItemsTable = ({
+  allExpenses,
+  expenseSvc,
+  setAllExpenses,
+}: ItemsTableProps) => {
+  const handleDelete = (item: Expense) => {
+    expenseSvc.deleteExpense(item);
+    const data = expenseSvc.getExpenses();
+    setAllExpenses([...data]);
+  };
 
-    // Custom cell for monthly/yearly value
+  const handleUpdate = (item: Expense) => {
+    return;
+  };
+
+  // Custom cell for monthly/yearly value
   const renderCell = useCallback((item: Expense, columnKey: keyof Expense) => {
     const cellValue = item[columnKey as keyof Expense];
     switch (columnKey) {
@@ -72,7 +59,7 @@ const ItemsTable = ({ allExpenses, expenseSvc,  setAllExpenses }: ItemsTableProp
               <EditIcon />
             </span>
             <span className="text-lg text-danger cursor-pointer active:opacity-50">
-              <DeleteIcon onClick={() => handleDelete(item)}/>
+              <DeleteIcon onClick={() => handleDelete(item)} />
             </span>
           </div>
         );
@@ -81,17 +68,40 @@ const ItemsTable = ({ allExpenses, expenseSvc,  setAllExpenses }: ItemsTableProp
     }
   }, []);
 
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const newExpenseModal = (
+    <>
+    
+    <Button
+      onPress={onOpen}
+      className="bg-foreground text-background"
+      endContent={<PlusIcon />}
+      size="sm"
+    >
+      Add New
+    </Button>
+    <NewExpenseModal isOpen={isOpen} onOpenChange={onOpenChange}/>
+    </>
+  );
+
   return (
     <div className="flex w-full flex-col">
+      {/* Expenses Tab */}
       <Tabs aria-label="Complete expenses table">
         <Tab title="Expenses">
           <Card>
             <CardBody>
-              <Table aria-label="Complete expenses table">
-                <TableHeader columns={columns}>
-                  {columns.map((column) => (
-                    <TableColumn key={column.key}>{column.label}</TableColumn>
-                  ))}
+              <Table
+                aria-label="Complete expenses table"
+                topContent={newExpenseModal}
+              >
+                <TableHeader columns={expenseColumns}>
+                  <>
+                    {expenseColumns.map((column) => (
+                      <TableColumn key={column.key}>{column.label}</TableColumn>
+                    ))}
+                  </>
                 </TableHeader>
 
                 <TableBody>
@@ -108,6 +118,7 @@ const ItemsTable = ({ allExpenses, expenseSvc,  setAllExpenses }: ItemsTableProp
           </Card>
         </Tab>
 
+        {/* Income Tab */}
         <Tab title="Income">
           <Card>
             <CardBody>
@@ -118,6 +129,33 @@ const ItemsTable = ({ allExpenses, expenseSvc,  setAllExpenses }: ItemsTableProp
             </CardBody>
           </Card>
         </Tab>
+
+        {/* <Tab title="Add New" aria-label="Add new item">
+          <Card>
+            <CardBody>
+              <form className="flex flex-col gap-4">
+                <Input isRequired label="Item Name" />
+                <Input isRequired label="Amount" />
+                <Input isRequired label="Owner" />
+                <Input isRequired label="Frequency" />
+                <RadioGroup label="Frequency">
+                  <Radio value="monthly">Monthly</Radio>
+                  <Radio value="yearly">Yearly</Radio>
+                </RadioGroup>
+                <Input isRequired label="Category" />
+
+                <div className="flex gap-2 justify-end">
+                  <Button fullWidth color="primary">
+                    Add New Item
+                  </Button>
+                  <Button fullWidth color="danger">
+                    Reset
+                  </Button>
+                </div>
+              </form>
+            </CardBody>
+          </Card>
+        </Tab> */}
       </Tabs>
     </div>
   );
