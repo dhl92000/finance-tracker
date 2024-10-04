@@ -4,8 +4,8 @@ import { DeleteIcon } from "../data/DeleteIcon";
 import { EditIcon } from "../data/EditIcon";
 import expenseColumns from "../data/ExpenseColumns";
 import { Expense, MockExpenseService } from "../models/Expense";
-import { Input } from "@nextui-org/input";
-import { RadioGroup, Radio } from "@nextui-org/radio";
+// import { Input } from "@nextui-org/input";
+// import { RadioGroup, Radio } from "@nextui-org/radio";
 import {
   Table,
   TableHeader,
@@ -16,21 +16,17 @@ import {
 } from "@nextui-org/table";
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { useCallback } from "react";
-import ItemsDiv from "./ItemsDiv";
 import { PlusIcon } from "../data/PlusIcon";
 import { useDisclosure } from "@nextui-org/react";
 import NewExpenseModal from "../components/NewExpenseModal";
+
 interface ItemsTableProps {
   allExpenses: Expense[];
   expenseSvc: MockExpenseService;
   setAllExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 }
 
-const ItemsTable = ({
-  allExpenses,
-  expenseSvc,
-  setAllExpenses,
-}: ItemsTableProps) => {
+const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps) => {
   const handleDelete = (item: Expense) => {
     expenseSvc.deleteExpense(item);
     const data = expenseSvc.getExpenses();
@@ -69,19 +65,12 @@ const ItemsTable = ({
   }, []);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   const newExpenseModal = (
     <>
-    
-    <Button
-      onPress={onOpen}
-      className="bg-foreground text-background"
-      endContent={<PlusIcon />}
-      size="sm"
-    >
+    <Button onPress={onOpen} className="bg-foreground text-background" endContent={<PlusIcon />} size="sm">
       Add New
     </Button>
-    <NewExpenseModal isOpen={isOpen} onOpenChange={onOpenChange}/>
+    <NewExpenseModal isOpen={isOpen} onOpenChange={onOpenChange} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
     </>
   );
 
@@ -90,11 +79,11 @@ const ItemsTable = ({
       {/* Expenses Tab */}
       <Tabs aria-label="Complete expenses table">
         <Tab title="Expenses">
-          <Card>
-            <CardBody>
+
               <Table
                 aria-label="Complete expenses table"
                 topContent={newExpenseModal}
+
               >
                 <TableHeader columns={expenseColumns}>
                   <>
@@ -114,8 +103,7 @@ const ItemsTable = ({
                   ))}
                 </TableBody>
               </Table>
-            </CardBody>
-          </Card>
+
         </Tab>
 
         {/* Income Tab */}
