@@ -64,13 +64,13 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
     }
   }, []);
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const newExpenseModal = (
     <>
     <Button onPress={onOpen} className="bg-foreground text-background" endContent={<PlusIcon />} size="sm">
       Add New
     </Button>
-    <NewExpenseModal isOpen={isOpen} onOpenChange={onOpenChange} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
+    <NewExpenseModal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
     </>
   );
 
@@ -117,33 +117,6 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
             </CardBody>
           </Card>
         </Tab>
-
-        {/* <Tab title="Add New" aria-label="Add new item">
-          <Card>
-            <CardBody>
-              <form className="flex flex-col gap-4">
-                <Input isRequired label="Item Name" />
-                <Input isRequired label="Amount" />
-                <Input isRequired label="Owner" />
-                <Input isRequired label="Frequency" />
-                <RadioGroup label="Frequency">
-                  <Radio value="monthly">Monthly</Radio>
-                  <Radio value="yearly">Yearly</Radio>
-                </RadioGroup>
-                <Input isRequired label="Category" />
-
-                <div className="flex gap-2 justify-end">
-                  <Button fullWidth color="primary">
-                    Add New Item
-                  </Button>
-                  <Button fullWidth color="danger">
-                    Reset
-                  </Button>
-                </div>
-              </form>
-            </CardBody>
-          </Card>
-        </Tab> */}
       </Tabs>
     </div>
   );

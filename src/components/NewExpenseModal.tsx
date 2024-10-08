@@ -2,27 +2,24 @@ import { Button, ModalHeader } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { Radio, RadioGroup } from "@nextui-org/react";
 import { Modal, ModalBody, ModalContent } from "@nextui-org/react";
-//import { useDisclosure } from "@nextui-org/react";
 import { useState } from "react";
 import { Frequency, Expense, MockExpenseService } from "../models/Expense";
 
 interface NewExpenseModalProps {
   isOpen: boolean;
   onOpenChange: ((isOpen: boolean) => void) | undefined;
+  onClose: () => void
   expenseSvc: MockExpenseService;
   setAllExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 }
 
-const NewExpenseModal = ({
-  isOpen,
-  onOpenChange,
-  expenseSvc,
-  setAllExpenses,
-}: NewExpenseModalProps) => {
+const NewExpenseModal = ({ isOpen,onOpenChange, onClose, expenseSvc,setAllExpenses,}: NewExpenseModalProps) => {
+
   const [formData, setFormData] = useState({
-    id: Math.floor(Math.random() * 10),
+    id: Math.floor(Math.random() * 100),
     label: "",
-    amount: 0,
+    // amount: 0,
+    amount: '',
     owner: "User",
     frequency: Frequency.Monthly,
     category: "",
@@ -30,27 +27,43 @@ const NewExpenseModal = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "amount" ? parseInt(value) : value,
+      [name]: value,
     }));
   };
 
-  const handlesubmit = (event: React.FormEvent) => {
+  const [isValidNumber, setIsValidNumber] = useState(true)
+
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    expenseSvc.createExpense(formData);
-    const data = expenseSvc.getExpenses();
-    console.log(data);
-    setAllExpenses([...data]);
-    reset();
-    // turn off modal with onClose modal Event
+      if (Number.isNaN(parseInt(formData['amount']))) {
+      setIsValidNumber(false)
+      
+    } else {
+      const toNumber = parseInt(formData['amount'])
+      formData['amount'] = toNumber
+      // try {
+      //   expenseSvc.createExpense(formData);
+
+      // } catch {
+      //   setIsValidNumber(false)
+      // }
+      const data = expenseSvc.getExpenses();
+      setAllExpenses([...data]);
+      setIsValidNumber(true)
+      reset();
+      onClose()
+    }
   };
 
   const reset = () => {
     setFormData({
       id: 0,
       label: "",
-      amount: 0,
+      // amount: 0,
+      amount: '',
       owner: "User",
       frequency: Frequency.Monthly,
       category: "",
@@ -64,7 +77,7 @@ const NewExpenseModal = ({
           <>
             <ModalHeader>Create a New Expense</ModalHeader>
             <ModalBody>
-              <form className="flex flex-col gap-4" onSubmit={handlesubmit}>
+              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <Input
                   isRequired
                   label="Item Name"
@@ -72,6 +85,8 @@ const NewExpenseModal = ({
                   value={formData.label}
                   onChange={handleChange}
                 />
+                
+                {!isValidNumber && <div>Must enter a valid number higher than 0.</div>}
                 <Input
                   isRequired
                   label="Amount"
@@ -79,6 +94,7 @@ const NewExpenseModal = ({
                   value={formData.amount}
                   onChange={handleChange}
                 />
+
                 <Input
                   isRequired
                   label="Owner"
@@ -123,8 +139,6 @@ const NewExpenseModal = ({
                     fullWidth
                     color="primary"
                     type="submit"
-                    onClick={handlesubmit}
-                    onPress={onClose}
                   >
                     Add New Item
                   </Button>

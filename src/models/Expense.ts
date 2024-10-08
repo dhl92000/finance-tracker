@@ -72,6 +72,9 @@ export class MockExpenseService {
     frequency: Frequency;
     category: string;
   }) {
+    // if (expenseData.amount < 0) {
+    //   throw new Error("Amount must be greater than 0")
+    // }
     const newExpense = new Expense(
       expenseData.id,
 
@@ -79,7 +82,7 @@ export class MockExpenseService {
       expenseData.amount,
       expenseData.owner,
       expenseData.frequency,
-      expenseData.category
+      expenseData.category.toLowerCase()
     )
     this.expenses.push(newExpense);
    // console.log(newExpense)
