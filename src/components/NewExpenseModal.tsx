@@ -8,17 +8,22 @@ import { Frequency, Expense, MockExpenseService } from "../models/Expense";
 interface NewExpenseModalProps {
   isOpen: boolean;
   onOpenChange: ((isOpen: boolean) => void) | undefined;
-  onClose: () => void
+  onClose: () => void;
   expenseSvc: MockExpenseService;
   setAllExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 }
 
-const NewExpenseModal = ({ isOpen,onOpenChange, onClose, expenseSvc,setAllExpenses,}: NewExpenseModalProps) => {
-
+const NewExpenseModal = ({
+  isOpen,
+  onOpenChange,
+  onClose,
+  expenseSvc,
+  setAllExpenses,
+}: NewExpenseModalProps) => {
   const [formData, setFormData] = useState({
     id: Math.floor(Math.random() * 100),
     label: "",
-    amount: '',
+    amount: "",
     owner: "User",
     frequency: Frequency.Monthly,
     category: "",
@@ -33,27 +38,21 @@ const NewExpenseModal = ({ isOpen,onOpenChange, onClose, expenseSvc,setAllExpens
     }));
   };
 
-  const [isValidNumber, setIsValidNumber] = useState(true)
+  const [isValidNumber, setIsValidNumber] = useState(true);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-      if (Number.isNaN(parseInt(formData['amount'])) || parseInt(formData['amount']) < 0 ) {
-      setIsValidNumber(false)
-    } else {
-      const toNumber = parseInt(formData['amount'])
-      formData['amount'] = toNumber
-      // try {
-      //   expenseSvc.createExpense(formData);
-
-      // } catch {
-      //   setIsValidNumber(false)
-      // }
+    try {
+      const toNumber = parseInt(formData["amount"]);
+      formData["amount"] = toNumber;
       expenseSvc.createExpense(formData);
       const data = expenseSvc.getExpenses();
       setAllExpenses([...data]);
-      setIsValidNumber(true)
-      onClose()
+      setIsValidNumber(true);
+      onClose();
       reset();
+    } catch (err) {
+      setIsValidNumber(false);
     }
   };
 
@@ -62,7 +61,7 @@ const NewExpenseModal = ({ isOpen,onOpenChange, onClose, expenseSvc,setAllExpens
       id: 0,
       label: "",
       // amount: 0,
-      amount: '',
+      amount: "",
       owner: "User",
       frequency: Frequency.Monthly,
       category: "",
@@ -84,8 +83,10 @@ const NewExpenseModal = ({ isOpen,onOpenChange, onClose, expenseSvc,setAllExpens
                   value={formData.label}
                   onChange={handleChange}
                 />
-                
-                {!isValidNumber && <div>Must enter a valid number higher than 0.</div>}
+
+                {!isValidNumber && (
+                  <div>Must enter a valid number higher than 0.</div>
+                )}
                 <Input
                   isRequired
                   label="Amount"
@@ -134,11 +135,7 @@ const NewExpenseModal = ({ isOpen,onOpenChange, onClose, expenseSvc,setAllExpens
                   <Button fullWidth onPress={onClose}>
                     Cancel
                   </Button>
-                  <Button
-                    fullWidth
-                    color="primary"
-                    type="submit"
-                  >
+                  <Button fullWidth color="primary" type="submit">
                     Add New Item
                   </Button>
                 </div>

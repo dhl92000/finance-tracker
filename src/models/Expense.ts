@@ -71,9 +71,12 @@ export class MockExpenseService {
     frequency: Frequency;
     category: string;
   }) {
-    // if (expenseData.amount < 0) {
-    //   throw new Error("Amount must be greater than 0")
-    // }
+ 
+    if (Number.isNaN(expenseData['amount']) || expenseData.amount < 0 ) {
+      expenseData['amount'] = 0
+      throw new Error("Amount must be a valid number greater than 0")
+    }
+
     const newExpense = new Expense(
       expenseData.id,
       expenseData.label,
@@ -83,7 +86,7 @@ export class MockExpenseService {
       expenseData.category.toLowerCase()
     )
     this.expenses.push(newExpense);
-   // console.log(newExpense)
+    // console.log(newExpense)
   }
   // update
   updateExpense(data: Expense) {
