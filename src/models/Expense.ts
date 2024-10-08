@@ -65,7 +65,6 @@ export class MockExpenseService {
   //   }
   createExpense(expenseData: {
     id: number
-    
     label: string;
     amount: number;
     owner: string;
@@ -77,7 +76,6 @@ export class MockExpenseService {
     // }
     const newExpense = new Expense(
       expenseData.id,
-
       expenseData.label,
       expenseData.amount,
       expenseData.owner,

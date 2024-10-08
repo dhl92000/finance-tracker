@@ -6,7 +6,7 @@ import { NextUIProvider } from "@nextui-org/system";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <NextUIProvider>
+    <NextUIProvider validationBehavior='native'>
       <App />
     </NextUIProvider>
   </StrictMode>

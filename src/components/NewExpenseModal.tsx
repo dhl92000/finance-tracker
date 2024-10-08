@@ -18,7 +18,6 @@ const NewExpenseModal = ({ isOpen,onOpenChange, onClose, expenseSvc,setAllExpens
   const [formData, setFormData] = useState({
     id: Math.floor(Math.random() * 100),
     label: "",
-    // amount: 0,
     amount: '',
     owner: "User",
     frequency: Frequency.Monthly,
@@ -38,9 +37,8 @@ const NewExpenseModal = ({ isOpen,onOpenChange, onClose, expenseSvc,setAllExpens
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-      if (Number.isNaN(parseInt(formData['amount']))) {
+      if (Number.isNaN(parseInt(formData['amount'])) || parseInt(formData['amount']) < 0 ) {
       setIsValidNumber(false)
-      
     } else {
       const toNumber = parseInt(formData['amount'])
       formData['amount'] = toNumber
@@ -50,11 +48,12 @@ const NewExpenseModal = ({ isOpen,onOpenChange, onClose, expenseSvc,setAllExpens
       // } catch {
       //   setIsValidNumber(false)
       // }
+      expenseSvc.createExpense(formData);
       const data = expenseSvc.getExpenses();
       setAllExpenses([...data]);
       setIsValidNumber(true)
-      reset();
       onClose()
+      reset();
     }
   };
 
