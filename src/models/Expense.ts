@@ -76,6 +76,11 @@ export class MockExpenseService {
       expenseData['amount'] = 0
       throw new Error("Amount must be a valid number greater than 0")
     }
+    if (expenseData.frequency === '12') {
+      expenseData.frequency = Frequency.Yearly
+    } else {
+      expenseData.frequency = Frequency.Monthly
+    }
 
     const newExpense = new Expense(
       expenseData.id,
@@ -87,6 +92,8 @@ export class MockExpenseService {
     )
     this.expenses.push(newExpense);
     // console.log(newExpense)
+    // console.log(typeof newExpense.frequency)
+    // console.log(newExpense.frequency)
   }
   // update
   updateExpense(data: Expense) {
@@ -97,7 +104,7 @@ export class MockExpenseService {
       amount: data.amount,
       owner: data.owner,
       frequency: data.frequency,
-      category: data.category
+      category: data.category.toLowerCase()
     }
   }
 

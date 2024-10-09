@@ -20,7 +20,7 @@ import { PlusIcon } from "../data/PlusIcon";
 import { useDisclosure } from "@nextui-org/react";
 import NewExpenseModal from "../components/NewExpenseModal";
 import UpdateExpenseModal from "../components/UpdateExpenseModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ItemsTableProps {
   allExpenses: Expense[];
@@ -44,12 +44,17 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
     updateDisclosure.onOpen()
   }
 
+  // useEffect(() => {
+  //   console.log(columnItem); // This will log the updated state
+  // }, [columnItem]);
+
   // Custom cell for properties, monthly/yearly value, and actions
   const renderCell = useCallback((item: Expense, columnKey: keyof Expense) => {
     const cellValue = item[columnKey as keyof Expense];
+    //console.log(cellValue)
     switch (columnKey) {
       case "frequency":
-        if (cellValue === "1") {
+        if (cellValue === 12) {
           return "Yearly";
         } else {
           return "Monthly";
