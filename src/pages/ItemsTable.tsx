@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button} from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { DeleteIcon } from "../data/DeleteIcon";
 import { EditIcon } from "../data/EditIcon";
@@ -19,6 +19,8 @@ import { useCallback } from "react";
 import { PlusIcon } from "../data/PlusIcon";
 import { useDisclosure } from "@nextui-org/react";
 import NewExpenseModal from "../components/NewExpenseModal";
+import UpdateExpenseModal from "../components/UpdateExpenseModal";
+import { useState } from "react";
 
 interface ItemsTableProps {
   allExpenses: Expense[];
@@ -27,17 +29,22 @@ interface ItemsTableProps {
 }
 
 const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps) => {
+  const updateDisclosure = useDisclosure()
+  const newDisclosure = useDisclosure()
+
   const handleDelete = (item: Expense) => {
     expenseSvc.deleteExpense(item);
     const data = expenseSvc.getExpenses();
     setAllExpenses([...data]);
   };
+  
+  const [columnItem, setColumnItem] = useState<Expense | undefined>(undefined)
+  const openUpdateModal = (item: Expense) => {
+    setColumnItem(item)
+    updateDisclosure.onOpen()
+  }
 
-  const handleUpdate = (item: Expense) => {
-    return;
-  };
-
-  // Custom cell for monthly/yearly value
+  // Custom cell for properties, monthly/yearly value, and actions
   const renderCell = useCallback((item: Expense, columnKey: keyof Expense) => {
     const cellValue = item[columnKey as keyof Expense];
     switch (columnKey) {
@@ -52,7 +59,7 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
         return (
           <div className="relative flex items-center gap-2">
             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-              <EditIcon />
+              <EditIcon onClick={() => openUpdateModal(item)}/>
             </span>
             <span className="text-lg text-danger cursor-pointer active:opacity-50">
               <DeleteIcon onClick={() => handleDelete(item)} />
@@ -64,27 +71,22 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
     }
   }, []);
 
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const newExpenseModal = (
+const newExpenseModal = (
     <>
-    <Button onPress={onOpen} className="bg-foreground text-background" endContent={<PlusIcon />} size="sm">
+    <Button onPress={newDisclosure.onOpen} className="bg-foreground text-background" endContent={<PlusIcon />} size="sm">
       Add New
     </Button>
-    <NewExpenseModal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
+    <NewExpenseModal isOpen={newDisclosure.isOpen} onOpenChange={newDisclosure.onOpenChange} onClose={newDisclosure.onClose} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
     </>
-  );
+  )
 
   return (
     <div className="flex w-full flex-col">
       {/* Expenses Tab */}
+      <UpdateExpenseModal columnItem={columnItem} isOpen={updateDisclosure.isOpen} onOpenChange={updateDisclosure.onOpenChange} onClose={updateDisclosure.onClose} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
       <Tabs aria-label="Complete expenses table">
         <Tab title="Expenses">
-
-              <Table
-                aria-label="Complete expenses table"
-                topContent={newExpenseModal}
-
-              >
+              <Table aria-label="Complete expenses table" topContent={newExpenseModal}>
                 <TableHeader columns={expenseColumns}>
                   <>
                     {expenseColumns.map((column) => (
@@ -92,7 +94,6 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
                     ))}
                   </>
                 </TableHeader>
-
                 <TableBody>
                   {allExpenses.map((row) => (
                     <TableRow key={row.id}>
@@ -101,9 +102,9 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
                       )}
                     </TableRow>
                   ))}
+                  
                 </TableBody>
               </Table>
-
         </Tab>
 
         {/* Income Tab */}

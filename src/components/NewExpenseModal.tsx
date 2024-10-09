@@ -60,7 +60,6 @@ const NewExpenseModal = ({
     setFormData({
       id: 0,
       label: "",
-      // amount: 0,
       amount: "",
       owner: "User",
       frequency: Frequency.Monthly,
@@ -68,84 +67,84 @@ const NewExpenseModal = ({
     });
   };
 
-  return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader>Create a New Expense</ModalHeader>
-            <ModalBody>
-              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                <Input
-                  isRequired
-                  label="Item Name"
-                  name="label"
-                  value={formData.label}
-                  onChange={handleChange}
-                />
-
-                {!isValidNumber && (
-                  <div>Must enter a valid number higher than 0.</div>
-                )}
-                <Input
-                  isRequired
-                  label="Amount"
-                  name="amount"
-                  value={formData.amount}
-                  onChange={handleChange}
-                />
-
-                <Input
-                  isRequired
-                  label="Owner"
-                  name="owner"
-                  value={formData.owner}
-                  onChange={handleChange}
-                />
-
-                <RadioGroup
-                  label="Frequency"
-                  defaultValue={Frequency.Monthly.toString()}
-                >
-                  <Radio
-                    name="frequency"
-                    value={Frequency.Monthly.toString()}
+    return (
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader>Create a New Expense</ModalHeader>
+              <ModalBody>
+                <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                  <Input
+                    isRequired
+                    label="Item Name"
+                    name="label"
+                    value={formData.label}
                     onChange={handleChange}
-                  >
-                    Monthly
-                  </Radio>
-                  <Radio
-                    name="frequency"
-                    value={Frequency.Yearly.toString()}
+                  />
+
+                  {!isValidNumber && (
+                    <div>Must enter a valid number higher than 0.</div>
+                  )}
+                  <Input
+                    isRequired
+                    label="Amount"
+                    name="amount"
+                    value={formData.amount}
                     onChange={handleChange}
+                  />
+
+                  <Input
+                    isRequired
+                    label="Owner"
+                    name="owner"
+                    value={formData.owner}
+                    onChange={handleChange}
+                  />
+
+                  <RadioGroup
+                    label="Frequency"
+                    defaultValue={Frequency.Monthly.toString()}
                   >
-                    Yearly
-                  </Radio>
-                </RadioGroup>
+                    <Radio
+                      name="frequency"
+                      value={Frequency.Monthly.toString()}
+                      onChange={handleChange}
+                    >
+                      Monthly
+                    </Radio>
+                    <Radio
+                      name="frequency"
+                      value={Frequency.Yearly.toString()}
+                      onChange={handleChange}
+                    >
+                      Yearly
+                    </Radio>
+                  </RadioGroup>
 
-                <Input
-                  isRequired
-                  label="Category"
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                />
+                  <Input
+                    isRequired
+                    label="Category"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                  />
 
-                <div className="flex gap-2 justify-end">
-                  <Button fullWidth onPress={onClose}>
-                    Cancel
-                  </Button>
-                  <Button fullWidth color="primary" type="submit">
-                    Add New Item
-                  </Button>
-                </div>
-              </form>
-            </ModalBody>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
-  );
-};
+                  <div className="flex gap-2 justify-end">
+                    <Button fullWidth onPress={onClose}>
+                      Cancel
+                    </Button>
+                    <Button fullWidth color="primary" type="submit">
+                      Add New Item
+                    </Button>
+                  </div>
+                </form>
+              </ModalBody>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    );
+  };
 
 export default NewExpenseModal;
