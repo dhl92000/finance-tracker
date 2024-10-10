@@ -39,6 +39,7 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
   };
   
   const [columnItem, setColumnItem] = useState<Expense | undefined>(undefined)
+  
   const openUpdateModal = (item: Expense) => {
     setColumnItem(item)
     updateDisclosure.onOpen()

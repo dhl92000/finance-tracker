@@ -1,6 +1,6 @@
 export class Expense {
   // Properties
-  id: number
+  id: number;
 
   label: string;
   amount: number;
@@ -17,7 +17,7 @@ export class Expense {
     frequency: Frequency,
     category: string
   ) {
-    this.id = id
+    this.id = id;
 
     this.label = label;
     this.amount = amount;
@@ -60,61 +60,61 @@ export class MockExpenseService {
   getExpenses(): Expense[] {
     return this.expenses;
   }
-  //   getExpense(id: number): Expense {
 
-  //   }
-  createExpense(expenseData: {
-    id: number
+  createExpense(data: {
+    id: number;
     label: string;
     amount: number;
     owner: string;
     frequency: Frequency;
     category: string;
   }) {
- 
-    if (Number.isNaN(expenseData['amount']) || expenseData.amount < 0 ) {
-      expenseData['amount'] = 0
-      throw new Error("Amount must be a valid number greater than 0")
+    // Radio group creates frequency as a string
+    if (Number.isNaN(data["amount"]) || data.amount < 0) {
+      data["amount"] = 0;
+      throw new Error("Amount must be a valid number greater than 0");
     }
-    if (expenseData.frequency === '12') {
-      expenseData.frequency = Frequency.Yearly
+    if (data.frequency === "12") {
+      data.frequency = Frequency.Yearly;
     } else {
-      expenseData.frequency = Frequency.Monthly
+      data.frequency = Frequency.Monthly;
     }
 
     const newExpense = new Expense(
-      expenseData.id,
-      expenseData.label,
-      expenseData.amount,
-      expenseData.owner,
-      expenseData.frequency,
-      expenseData.category.toLowerCase()
-    )
+      data.id,
+      data.label,
+      data.amount,
+      data.owner,
+      data.frequency,
+      data.category.toLowerCase()
+    );
     this.expenses.push(newExpense);
-    // console.log(newExpense)
-    // console.log(typeof newExpense.frequency)
-    // console.log(newExpense.frequency)
   }
+
   // update
   updateExpense(data: Expense) {
-    const indexToUpdate = this.expenses.findIndex((el) => el.id === data.id)
+    const indexToUpdate = this.expenses.findIndex((el) => el.id === data.id);
+
+    if (Number.isNaN(data["amount"]) || data.amount < 0) {
+      data["amount"] = 0;
+      throw new Error("Amount must be a valid number greater than 0");
+    }
+
     this.expenses[indexToUpdate] = {
       id: data.id,
       label: data.label,
       amount: data.amount,
       owner: data.owner,
       frequency: data.frequency,
-      category: data.category.toLowerCase()
-    }
+      category: data.category.toLowerCase(),
+    };
   }
 
   // delete
   deleteExpense(item: Expense) {
-    // find the expense with this index
-    const indexToDelete = this.expenses.findIndex((el) => el.id === item.id)
-    this.expenses.splice(indexToDelete, 1)
+    const indexToDelete = this.expenses.findIndex((el) => el.id === item.id);
+    this.expenses.splice(indexToDelete, 1);
   }
-
 }
 
 export class ExpenseSummarizer {

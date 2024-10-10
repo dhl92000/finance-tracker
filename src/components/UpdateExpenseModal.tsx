@@ -17,22 +17,33 @@ const UpdateExpenseModal = ({columnItem,isOpen,onOpenChange, onClose, expenseSvc
   const [formData, setFormData] = useState({
     id: 0,
     label: '',
-    amount: 0,
+    amount: '',
     owner: 'User',
-    frequency: Frequency.Monthly,
+    frequency: '',
     category: '',
   });
 
+  // columnItem is just Expense in raw form 
+ // number console.log(typeof columnItem?.frequency)
+
+ // in my edit form, if fields are prepopulated, they are all strings
+  // when submit is pressed, its also all strings 
+  // so my state for the radio group has to take the number and make into a string
+  // and my radio inputs all have to be to string 
+
+  // I need to use formData, after I get columnItem and write it into FORMDATA
+  // and not use props directly(?) 
   useEffect(() => {
     if (columnItem) {
       setFormData({
         id: columnItem.id,
         label: columnItem.label,
-        amount: columnItem.amount,
+        amount: columnItem.amount.toString(),
         owner: 'User',
-        frequency: columnItem.frequency,
+        frequency: columnItem.frequency.toString(),
         category: columnItem.category,
       });
+      setSelected(columnItem.frequency.toString())
     }
   }, [columnItem]);
 
@@ -40,22 +51,33 @@ const UpdateExpenseModal = ({columnItem,isOpen,onOpenChange, onClose, expenseSvc
     const { name, value } = event.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const toNumber = parseInt(formData["amount"]);
-      formData["amount"] = toNumber;
-      expenseSvc.updateExpense(formData);
-      const data = expenseSvc.getExpenses();
-      setAllExpenses([...data]);
-    
+    try {
+        const toNumber = parseInt(formData["amount"]);
 
-    onClose()
+        const expense: Expense = {
+            ...formData,
+            amount: toNumber,
+            frequency: parseInt(formData.frequency) as Frequency
+        }
+        expenseSvc.updateExpense(expense);
+        const data = expenseSvc.getExpenses();
+        setAllExpenses([...data]);
+        //reset()
+        onClose()
+    } catch (err) {
+        console.log(err)
+    }
   };
-  // const item = allExpenses[itemId]
+  
+  const [selected, setSelected] = useState(formData.frequency.toString());
+  // selected state does not change when I close/open the modal, even though columnItem changes
+  // console.log(selected)
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
@@ -79,7 +101,7 @@ const UpdateExpenseModal = ({columnItem,isOpen,onOpenChange, onClose, expenseSvc
                   isRequired
                   label="Amount"
                   name="amount"
-                  value={formData.amount}
+                  value={formData.amount.toString()}
                   onChange={handleChange}
                 />
 
@@ -92,20 +114,20 @@ const UpdateExpenseModal = ({columnItem,isOpen,onOpenChange, onClose, expenseSvc
                 />
 
                 <RadioGroup
+                  isRequired
                   label="Frequency"
-                  defaultValue={Frequency.Monthly.toString()}
+                  name="frequency"
+                  onChange={handleChange}
+                  value={selected}
+                  onValueChange={setSelected}
                 >
                   <Radio
-                    name="frequency"
                     value={Frequency.Monthly.toString()}
-                    onChange={handleChange}
                   >
                     Monthly
                   </Radio>
                   <Radio
-                    name="frequency"
-                    value={Frequency.Yearly.toString()}
-                    onChange={handleChange}
+                    value={Frequency.Yearly.toString()}    
                   >
                     Yearly
                   </Radio>

@@ -65,8 +65,9 @@ const NewExpenseModal = ({
       category: "",
     });
   };
-  const [selected, setSelected] = useState('Monthly');
-
+  // const [selected, setSelected] = useState('Monthly');
+  const [selected, setSelected] = useState(Frequency.Monthly.toString());
+  
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
