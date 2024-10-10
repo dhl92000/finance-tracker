@@ -59,7 +59,6 @@ const UpdateExpenseModal = ({columnItem,isOpen,onOpenChange, onClose, expenseSvc
     event.preventDefault();
     try {
         const toNumber = parseInt(formData["amount"]);
-
         const expense: Expense = {
             ...formData,
             amount: toNumber,
@@ -76,8 +75,7 @@ const UpdateExpenseModal = ({columnItem,isOpen,onOpenChange, onClose, expenseSvc
   };
   
   const [selected, setSelected] = useState(formData.frequency.toString());
-  // selected state does not change when I close/open the modal, even though columnItem changes
-  // console.log(selected)
+
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>

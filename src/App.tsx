@@ -1,6 +1,5 @@
 import "./App.css";
 import {
-  Expense,
   MockExpenseService,
   ExpenseSummarizer,
 } from "./models/Expense";
@@ -8,8 +7,6 @@ import { expenses } from "./data/Data";
 import CategoryItem from "./components/CategoryItem";
 import Header from "./components/Header";
 import ItemsTable from "./pages/ItemsTable";
-// import NewExpense from "./pages/NewExpense";
-// import ExpenseItem from "./components/ExpenseItem";
 import { useState } from "react";
 
 

@@ -20,7 +20,7 @@ import { PlusIcon } from "../data/PlusIcon";
 import { useDisclosure } from "@nextui-org/react";
 import NewExpenseModal from "../components/NewExpenseModal";
 import UpdateExpenseModal from "../components/UpdateExpenseModal";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 
 interface ItemsTableProps {
   allExpenses: Expense[];

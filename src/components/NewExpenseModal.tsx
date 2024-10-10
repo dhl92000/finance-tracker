@@ -25,7 +25,7 @@ const NewExpenseModal = ({
     label: "",
     amount: "",
     owner: "User",
-    frequency: Frequency.Monthly,
+    frequency: "",
     category: "",
   });
 
@@ -42,15 +42,19 @@ const NewExpenseModal = ({
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const toNumber = parseInt(formData.amount);
-      formData.amount = toNumber;
-      expenseSvc.createExpense(formData);
+      const toNumber = parseInt(formData["amount"]);
+      const expense: Expense = {
+          ...formData,
+          amount: toNumber,
+          frequency: parseInt(formData.frequency) as Frequency
+      }
+      expenseSvc.createExpense(expense)
       const data = expenseSvc.getExpenses();
       setAllExpenses([...data]);
       setIsValidNumber(true);
       onClose();
       reset();
-    } catch (err) {
+    } catch {
       setIsValidNumber(false);
     }
   };
@@ -61,10 +65,11 @@ const NewExpenseModal = ({
       label: "",
       amount: "",
       owner: "User",
-      frequency: Frequency.Monthly,
+      frequency: "",
       category: "",
     });
   };
+
   // const [selected, setSelected] = useState('Monthly');
   const [selected, setSelected] = useState(Frequency.Monthly.toString());
   

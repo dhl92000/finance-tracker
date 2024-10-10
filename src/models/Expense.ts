@@ -74,7 +74,7 @@ export class MockExpenseService {
       data["amount"] = 0;
       throw new Error("Amount must be a valid number greater than 0");
     }
-    if (data.frequency === "12") {
+    if (data.frequency === 12) {
       data.frequency = Frequency.Yearly;
     } else {
       data.frequency = Frequency.Monthly;
