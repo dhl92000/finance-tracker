@@ -65,10 +65,10 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
         return (
           <div className="relative flex items-center gap-2">
             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-              <EditIcon onClick={() => openUpdateModal(item)}/>
+              <EditIcon data-testid="edit-icon" onClick={() => openUpdateModal(item)}/>
             </span>
             <span className="text-lg text-danger cursor-pointer active:opacity-50">
-              <DeleteIcon onClick={() => handleDelete(item)} />
+              <DeleteIcon data-testid="delete-icon" onClick={() => handleDelete(item)} />
             </span>
           </div>
         );

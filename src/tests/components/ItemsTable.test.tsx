@@ -5,6 +5,7 @@ import ItemsTable from '../../pages/ItemsTable'
 import { expenses } from '../../data/Data'
 import { MockExpenseService } from '../../models/Expense'
 const expenseSvc = new MockExpenseService(expenses)
+
 describe('ItemsTable', () => {
     it('ItemsTable renders without crashing', () => {
        // const expenseSvc = new MockExpenseService(expenses)
@@ -26,5 +27,24 @@ describe('ItemsTable', () => {
         expect(incomeTab).toBeInTheDocument()
     })
 
+    it('renders correct number of expenses in ItemsTable', () => {
+        render(<ItemsTable allExpenses={expenses} expenseSvc={expenseSvc} setAllExpenses={() => {}} />);
+        const rows = screen.queryAllByRole('row')
+        expect(rows.length).toEqual(expenses.length + 1)
+    })
+
+    it('renders delete icon for each row', () => {
+        render(<ItemsTable allExpenses={expenses} expenseSvc={expenseSvc} setAllExpenses={() => {}} />);
+        const deleteIcons = screen.queryAllByTestId('delete-icon')
+        expect(deleteIcons).toHaveLength(expenses.length )
+    })
+
+    it('renders edit icon for each row', () => {
+        render(<ItemsTable allExpenses={expenses} expenseSvc={expenseSvc} setAllExpenses={() => {}} />);
+        const editIcons = screen.queryAllByTestId('edit-icon')
+        expect(editIcons).toHaveLength(expenses.length )
+    })
+
     
+
 })
