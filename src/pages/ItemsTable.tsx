@@ -1,5 +1,5 @@
 import { Button} from "@nextui-org/react";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Card, CardBody} from "@nextui-org/card";
 import { DeleteIcon } from "../data/DeleteIcon";
 import { EditIcon } from "../data/EditIcon";
 import expenseColumns from "../data/ExpenseColumns";
@@ -50,7 +50,7 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
   // }, [columnItem]);
 
   // Custom cell for properties, monthly/yearly value, and actions
-  const renderCell = useCallback((item: Expense, columnKey: keyof Expense) => {
+  const renderCell = useCallback((item: Expense, columnKey: string | number)  => {
     const cellValue = item[columnKey as keyof Expense];
     //console.log(cellValue)
     switch (columnKey) {
@@ -77,14 +77,14 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
     }
   }, []);
 
-const newExpenseModal = (
-    <>
-    <Button onPress={newDisclosure.onOpen} className="bg-foreground text-background" endContent={<PlusIcon />} size="sm">
-      Add New
-    </Button>
-    <NewExpenseModal isOpen={newDisclosure.isOpen} onOpenChange={newDisclosure.onOpenChange} onClose={newDisclosure.onClose} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
-    </>
-  )
+  const newExpenseModal = (
+      <>
+      <Button onPress={newDisclosure.onOpen} className="bg-foreground text-background" endContent={<PlusIcon />} size="sm">
+        Add New
+      </Button>
+      <NewExpenseModal isOpen={newDisclosure.isOpen} onOpenChange={newDisclosure.onOpenChange} onClose={newDisclosure.onClose} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
+      </>
+    )
 
   return (
     <div className="flex w-full flex-col">

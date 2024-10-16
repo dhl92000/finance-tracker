@@ -83,7 +83,7 @@ const NewExpenseModal = ({
               <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <Input
                   isRequired
-                  label="Item Name"
+                  label="New Item Name"
                   name="label"
                   value={formData.label}
                   onChange={handleChange}
