@@ -79,7 +79,7 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
 
   const newExpenseModal = (
       <>
-      <Button onPress={newDisclosure.onOpen} className="bg-foreground text-background" endContent={<PlusIcon />} size="sm">
+      <Button data-testid='add-new-button' onPress={newDisclosure.onOpen} className="bg-foreground text-background" endContent={<PlusIcon />} size="sm">
         Add New
       </Button>
       <NewExpenseModal isOpen={newDisclosure.isOpen} onOpenChange={newDisclosure.onOpenChange} onClose={newDisclosure.onClose} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
