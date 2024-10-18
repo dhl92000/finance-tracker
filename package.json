@@ -12,6 +12,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@fisch0920/use-dark-mode": "^2.4.0",
     "@nextui-org/card": "^2.0.34",
     "@nextui-org/radio": "^2.1.5",
     "@nextui-org/react": "^2.4.8",

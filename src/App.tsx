@@ -1,16 +1,20 @@
 import "./App.css";
-import {
-  MockExpenseService,
-  ExpenseSummarizer,
-} from "./models/Expense";
+import { MockExpenseService, ExpenseSummarizer } from "./models/Expense";
 import { expenses } from "./data/Data";
-import CategoryItem from "./components/CategoryItem";
+
 import Header from "./components/Header";
 import ItemsTable from "./pages/ItemsTable";
+import Summary from "./components/Summary";
 import { useState } from "react";
+import {Divider} from "@nextui-org/react";
+
+import useDarkMode from "@fisch0920/use-dark-mode";
+
 
 
 function App() {
+  //const darkMode = useDarkMode(false);
+
   // CRUD service that takes an array of expenses
   const expenseSvc = new MockExpenseService(expenses);
 
@@ -22,28 +26,19 @@ function App() {
   const summary = expenseSummarizer.summarizeExpenses(expenseSvc.getExpenses());
 
   return (
-    <>
-      <Header/>
-      <ItemsTable allExpenses={allExpenses} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
+    <div >
+      <Header />
 
-        <div className="summaryDiv">
-          <h3>Summary</h3>
-          {expenseSummarizer
-            .summarizeExpenses(expenseSvc.getExpenses())
-            .byCategory.map((item, index) => (
-              <CategoryItem
-                key={index}
-                itemCategory={item.category}
-                itemSum={item.sum}
-                itemPercentage={item.percentage}
-              />
-            ))}
-          <p>Total Monthly Expenses: ${summary.totalMonthlySum}</p>
-          <p>Total Annual Expenses: ${summary.totalAnnualSum}</p>
-        </div>
-
-
-    </>
+      <Divider className="my-6 md:my-8" />
+      <div className="md:flex gap-4">
+        <ItemsTable
+          allExpenses={allExpenses}
+          expenseSvc={expenseSvc}
+          setAllExpenses={setAllExpenses}
+        />
+        <Summary summary={summary} />
+      </div>
+    </div>
   );
 }
 

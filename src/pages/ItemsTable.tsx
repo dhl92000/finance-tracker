@@ -87,7 +87,7 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
     )
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col md:w-3/5">
       {/* Expenses Tab */}
       <UpdateExpenseModal columnItem={columnItem} isOpen={updateDisclosure.isOpen} onOpenChange={updateDisclosure.onOpenChange} onClose={updateDisclosure.onClose} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
       <Tabs aria-label="Complete expenses table">

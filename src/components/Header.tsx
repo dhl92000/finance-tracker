@@ -1,6 +1,6 @@
 const Header = () => {
     return(
-        <h1>Finance Tracker</h1>
+        <h1 className="text-4xl ">Finance Tracker</h1>
     )
 }
 

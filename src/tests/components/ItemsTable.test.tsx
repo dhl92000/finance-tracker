@@ -1,12 +1,11 @@
 import { it, expect, describe } from 'vitest'
 import { vi } from 'vitest'
 import '@testing-library/jest-dom/vitest'
-import {fireEvent, getByTestId, render, screen} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import ItemsTable from '../../pages/ItemsTable'
 import { expenses } from '../../data/Data'
 import { MockExpenseService } from '../../models/Expense'
-import NewExpenseModal from '../../components/NewExpenseModal'
 
 const expenseSvc = new MockExpenseService(expenses)
 
@@ -66,6 +65,4 @@ describe('ItemsTable', () => {
         expect(screen.getByText('Create a New Expense')).toBeInTheDocument()
 
     })
-
-
 })
