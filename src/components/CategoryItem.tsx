@@ -17,14 +17,14 @@ const CategoryItem = ({
   itemPercentage,
 }: CategoryItemProps) => {
   const categoryName = itemCategory[0].toUpperCase() + itemCategory.slice(1);
-  let chipColour: 'default' | 'success' | 'warning' | 'primary' | 'secondary' | 'danger' = 'default'
+  let chipColour = 'default'
 
 //  grey, orange, dark orange itemPercentage > 10 : 'orange'
 
 if (itemPercentage > 10 && itemPercentage < 20 ) {
-  chipColour = 'success'
+  chipColour = 'text-background bg-green-500'
 } else if (itemPercentage > 20) {
-  chipColour = 'warning'
+  chipColour = 'text-background bg-green-600'
 }
 
   return (
@@ -36,7 +36,7 @@ if (itemPercentage > 10 && itemPercentage < 20 ) {
 
       <div>{CurrencyFormatter.format(itemSum)}</div>
       <div>
-        <Chip radius='sm' color={chipColour}>{itemPercentage}%</Chip>
+        <Chip radius='sm' className={chipColour}>{itemPercentage}%</Chip>
       </div>
     </div>
   );

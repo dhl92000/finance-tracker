@@ -2,6 +2,7 @@ import { Card, CardBody } from "@nextui-org/card";
 import { Tabs, Tab } from "@nextui-org/tabs";
 import CategoryItem from "../components/CategoryItem";
 import { CurrencyFormatter } from "../util/CurrencyFormatter";
+import { useEffect, useState } from "react";
 
 interface SummaryItem {
   category: string;
@@ -19,6 +20,12 @@ interface SummaryProps {
 
 const Summary = ({ summary }: SummaryProps) => {
   
+  const [sortedCategories, setSortedCategories] = useState<SummaryItem[]>([])
+
+  useEffect(() => {
+    const sorted = summary.byCategory.sort((a, b) => b.sum - a.sum)
+    setSortedCategories(sorted)
+  }, [summary.byCategory])
 
   return (
     <div className="md:w-2/5 ">
@@ -33,7 +40,7 @@ const Summary = ({ summary }: SummaryProps) => {
           </div>
             <h4 className="text-left font-medium mt-6">Categories</h4>
             <CardBody>
-              {summary.byCategory.map((item, index) => (
+              {sortedCategories.map((item, index) => (
                 <CategoryItem
                   key={index}
                   itemCategory={item.category}
@@ -53,7 +60,7 @@ const Summary = ({ summary }: SummaryProps) => {
           </div>
             <h4 className="text-left font-medium mt-6">Categories</h4>
             <CardBody>
-              {summary.byCategory.map((item, index) => (
+              {sortedCategories.map((item, index) => (
                 <CategoryItem
                   key={index}
                   itemCategory={item.category}
