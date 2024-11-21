@@ -146,9 +146,7 @@ export class ExpenseSummarizer {
       // console.log(x)
       // console.log(monthlySums[x])
       const percentage =
-        monthlySums[x] === 0
-          ? 0
-          : Math.round((monthlySums[x] / monthlySumsTotal) * 100);
+        monthlySums[x] === 0 ? 0 : Math.round((monthlySums[x] / monthlySumsTotal) * 100);
 
       byCategory.push({
         category: x,

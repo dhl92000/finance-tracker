@@ -1,14 +1,7 @@
 import { Card, CardBody } from "@nextui-org/card";
+import { Tabs, Tab } from "@nextui-org/tabs";
 import CategoryItem from "../components/CategoryItem";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  getKeyValue,
-} from "@nextui-org/react";
+import { CurrencyFormatter } from "../util/CurrencyFormatter";
 
 interface SummaryItem {
   category: string;
@@ -25,40 +18,55 @@ interface SummaryProps {
 }
 
 const Summary = ({ summary }: SummaryProps) => {
+  
+
   return (
     <div className="md:w-2/5 ">
-      <h4 className="text-left my-4">Your Financial Summary</h4>
-      {/* <Table>
-        <TableHeader>
-          <TableColumn>Category</TableColumn>
-          <TableColumn>Amount</TableColumn>
-        </TableHeader>
-        <TableBody items={summary.byCategory}>
-         {(item) => (
-            <TableRow key={item.category}>
-                {(columnKey) => <TableCell> {getKeyValue(item,columnKey)}</TableCell>} 
-            </TableRow>
-         )}
-        </TableBody>
-      </Table> */}
+      <h4 className="text-left my-4 tracking-wide font-semibold">Financial Summary</h4>
+      <Tabs aria-label="Expenses Summary">
+        <Tab title="Monthly">
 
-      <Card className="p-6 md:p-10 ">
-        <h4 className="text-left">Expenses</h4>
-        <CardBody>
-          {summary.byCategory.map((item, index) => (
-            <CategoryItem
-              key={index}
-              itemCategory={item.category}
-              itemSum={item.sum}
-              itemPercentage={item.percentage}
-            />
-          ))}
-        </CardBody>
-        <div className="text-left">
-          <p>Total Monthly: ${summary.totalMonthlySum}</p>
-          <p>Total Annual: ${summary.totalAnnualSum}</p>
-        </div>
-      </Card>
+
+          <Card className="p-6 md:p-10 ">
+          <div className="text-left font-medium">
+              <p><div className="text-4xl text-green-600">{CurrencyFormatter.format(summary.totalMonthlySum)}</div> Total Monthly</p>
+          </div>
+            <h4 className="text-left font-medium mt-6">Categories</h4>
+            <CardBody>
+              {summary.byCategory.map((item, index) => (
+                <CategoryItem
+                  key={index}
+                  itemCategory={item.category}
+                  itemSum={item.sum}
+                  itemPercentage={item.percentage}
+                />
+              ))}
+            </CardBody>
+
+          </Card>
+        </Tab>
+
+        <Tab title="Yearly">
+        <Card className="p-6 md:p-10 ">
+          <div className="text-left font-medium">
+              <p><div className="text-4xl text-green-600">{CurrencyFormatter.format(summary.totalAnnualSum)}</div> Total Annual</p>
+          </div>
+            <h4 className="text-left font-medium mt-6">Categories</h4>
+            <CardBody>
+              {summary.byCategory.map((item, index) => (
+                <CategoryItem
+                  key={index}
+                  itemCategory={item.category}
+                  itemSum={item.sum * 12}
+                  itemPercentage={item.percentage}
+                />
+                
+              ))}
+            </CardBody>
+          </Card>
+          
+          </Tab>
+      </Tabs>
     </div>
   );
 };

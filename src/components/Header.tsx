@@ -1,7 +1,9 @@
 const Header = () => {
-    return(
-        <h1 className="text-4xl ">Finance Tracker</h1>
-    )
-}
+  return (
+    <div >
+      <h1 className="text-3xl tracking-wide">Finance Tracker</h1>
+    </div>
+  );
+};
 
-export default Header
+export default Header;

@@ -79,7 +79,7 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
 
   const newExpenseModal = (
       <>
-      <Button data-testid='add-new-button' onPress={newDisclosure.onOpen} className="bg-foreground text-background" endContent={<PlusIcon />} size="sm">
+      <Button data-testid='add-new-button' onPress={newDisclosure.onOpen} className="bg-foreground text-background bg-emerald-500	" endContent={<PlusIcon />} size="sm">
         Add New
       </Button>
       <NewExpenseModal isOpen={newDisclosure.isOpen} onOpenChange={newDisclosure.onOpenChange} onClose={newDisclosure.onClose} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
@@ -90,9 +90,11 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
     <div className="flex w-full flex-col md:w-3/5">
       {/* Expenses Tab */}
       <UpdateExpenseModal columnItem={columnItem} isOpen={updateDisclosure.isOpen} onOpenChange={updateDisclosure.onOpenChange} onClose={updateDisclosure.onClose} expenseSvc={expenseSvc} setAllExpenses={setAllExpenses}/>
+
+      <h4 className="text-left my-4 tracking-wide font-semibold">Expenses</h4>
       <Tabs aria-label="Complete expenses table">
         <Tab title="Expenses">
-              <Table aria-label="Complete expenses table" topContent={newExpenseModal}>
+              <Table aria-label="Expenses Table content" topContent={newExpenseModal}>
                 <TableHeader columns={expenseColumns}>
                   <>
                     {expenseColumns.map((column) => (
@@ -104,7 +106,7 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
                   {allExpenses.map((row) => (
                     <TableRow key={row.id}>
                       {(columnKey) => (
-                        <TableCell>{renderCell(row, columnKey)}</TableCell>
+                        <TableCell >{renderCell(row, columnKey)}</TableCell>
                       )}
                     </TableRow>
                   ))}
@@ -115,7 +117,7 @@ const ItemsTable = ({ allExpenses, expenseSvc, setAllExpenses,}: ItemsTableProps
 
         {/* Income Tab */}
         <Tab title="Income">
-          <Card>
+          <Card aria-label="Income card content">
             <CardBody>
               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
               nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in

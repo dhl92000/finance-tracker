@@ -1,22 +1,45 @@
+import { Chip } from "@nextui-org/chip";
+
+import { CurrencyFormatter } from "../util/CurrencyFormatter";
+
 // interface created for props
 interface CategoryItemProps {
-  itemCategory: string, 
-  itemSum: number, 
-  itemPercentage: number, 
-  key:number
+  itemCategory: string;
+  itemSum: number;
+  itemPercentage: number;
+  key: number;
 }
 
-const CategoryItem = ({key, itemCategory, itemSum, itemPercentage}:CategoryItemProps) => {
-  
-  const categoryName = itemCategory[0].toUpperCase() + itemCategory.slice(1)
+const CategoryItem = ({
+  key,
+  itemCategory,
+  itemSum,
+  itemPercentage,
+}: CategoryItemProps) => {
+  const categoryName = itemCategory[0].toUpperCase() + itemCategory.slice(1);
+  let chipColour: 'default' | 'success' | 'warning' | 'primary' | 'secondary' | 'danger' = 'default'
 
-    return (
-        <div key={key} className="flex justify-between my-1">
-          <div><p>{categoryName}</p></div>
-          <div>${itemSum}</div>
-          {/* <div><p>{itemPercentage}%</p></div> */}
-        </div>
-    )
+//  grey, orange, dark orange itemPercentage > 10 : 'orange'
+
+if (itemPercentage > 10 && itemPercentage < 20 ) {
+  chipColour = 'success'
+} else if (itemPercentage > 20) {
+  chipColour = 'warning'
 }
 
-export default CategoryItem
+  return (
+
+    <div key={key} className="flex justify-between my-2">
+      <div>
+        <p>{categoryName}</p>
+      </div>
+
+      <div>{CurrencyFormatter.format(itemSum)}</div>
+      <div>
+        <Chip radius='sm' color={chipColour}>{itemPercentage}%</Chip>
+      </div>
+    </div>
+  );
+};
+
+export default CategoryItem;

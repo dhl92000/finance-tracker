@@ -8,12 +8,7 @@ import Summary from "./components/Summary";
 import { useState } from "react";
 import {Divider} from "@nextui-org/react";
 
-import useDarkMode from "@fisch0920/use-dark-mode";
-
-
-
 function App() {
-  //const darkMode = useDarkMode(false);
 
   // CRUD service that takes an array of expenses
   const expenseSvc = new MockExpenseService(expenses);
@@ -29,7 +24,7 @@ function App() {
     <div >
       <Header />
 
-      <Divider className="my-6 md:my-8" />
+      <Divider className="my-4 md:my-4" />
       <div className="md:flex gap-4">
         <ItemsTable
           allExpenses={allExpenses}

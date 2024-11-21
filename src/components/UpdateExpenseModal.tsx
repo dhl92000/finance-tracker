@@ -143,7 +143,7 @@ const UpdateExpenseModal = ({columnItem,isOpen,onOpenChange, onClose, expenseSvc
                 <Button fullWidth onPress={onClose}>
                   Cancel
                 </Button>
-                <Button fullWidth color="primary" type="submit">
+                <Button fullWidth color="primary" className="bg-emerald-500" type="submit">
                       Confirm
                     </Button>
                     </div>

@@ -140,7 +140,7 @@ const NewExpenseModal = ({
                   <Button fullWidth onPress={onClose}>
                     Cancel
                   </Button>
-                  <Button fullWidth color="primary" type="submit">
+                  <Button fullWidth color="primary" className="bg-emerald-500" type="submit">
                     Add New Item
                   </Button>
                 </div>
