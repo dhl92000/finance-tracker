@@ -19,27 +19,31 @@ interface SummaryProps {
 }
 
 const Summary = ({ summary }: SummaryProps) => {
-  
-  const [sortedCategories, setSortedCategories] = useState<SummaryItem[]>([])
+  const [sortedCategories, setSortedCategories] = useState<SummaryItem[]>([]);
 
   useEffect(() => {
-    const sorted = summary.byCategory.sort((a, b) => b.sum - a.sum)
-    setSortedCategories(sorted)
-  }, [summary.byCategory])
+    const sorted = summary.byCategory.sort((a, b) => b.sum - a.sum);
+    setSortedCategories(sorted);
+  }, [summary.byCategory]);
 
   return (
     <div className="md:w-2/5 ">
-      <h4 className="text-left my-4 tracking-wide font-semibold">Financial Summary</h4>
+      <h4 className="text-left my-4 tracking-wide font-semibold">
+        Financial Summary
+      </h4>
       <Tabs aria-label="Expenses Summary">
         <Tab title="Monthly">
-
-
-          <Card className="p-6 md:p-10 ">
-          <div className="text-left font-medium">
-              <p><div className="text-4xl text-green-600">{CurrencyFormatter.format(summary.totalMonthlySum)}</div> Total Monthly</p>
-          </div>
-            <h4 className="text-left font-medium mt-6">Categories</h4>
+          <Card className="p-6 md:p-8">
             <CardBody>
+              <div className="text-left font-medium">
+                <p>
+                  <div className="text-4xl text-green-600">
+                    {CurrencyFormatter.format(summary.totalMonthlySum)}
+                  </div>{" "}
+                  Total Monthly
+                </p>
+              </div>
+              <h4 className="text-left font-medium mt-6">Categories</h4>
               {sortedCategories.map((item, index) => (
                 <CategoryItem
                   key={index}
@@ -49,17 +53,21 @@ const Summary = ({ summary }: SummaryProps) => {
                 />
               ))}
             </CardBody>
-
           </Card>
         </Tab>
 
         <Tab title="Yearly">
-        <Card className="p-6 md:p-10 ">
-          <div className="text-left font-medium">
-              <p><div className="text-4xl text-green-600">{CurrencyFormatter.format(summary.totalAnnualSum)}</div> Total Annual</p>
-          </div>
-            <h4 className="text-left font-medium mt-6">Categories</h4>
+          <Card className="p-6 md:p-8 ">
             <CardBody>
+            <div className="text-left font-medium">
+              <p>
+                <div className="text-4xl text-green-600">
+                  {CurrencyFormatter.format(summary.totalAnnualSum)}
+                </div>{" "}
+                Total Annual
+              </p>
+            </div>
+            <h4 className="text-left font-medium mt-6">Categories</h4>
               {sortedCategories.map((item, index) => (
                 <CategoryItem
                   key={index}
@@ -67,12 +75,10 @@ const Summary = ({ summary }: SummaryProps) => {
                   itemSum={item.sum * 12}
                   itemPercentage={item.percentage}
                 />
-                
               ))}
             </CardBody>
           </Card>
-          
-          </Tab>
+        </Tab>
       </Tabs>
     </div>
   );

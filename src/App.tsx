@@ -5,11 +5,12 @@ import { expenses } from "./data/Data";
 import Header from "./components/Header";
 import ItemsTable from "./pages/ItemsTable";
 import Summary from "./components/Summary";
-import { useState } from "react";
-import {Divider} from "@nextui-org/react";
+import ThemeContext from "./store/ThemeContext";
+import { ThemeContextProvider } from "./store/ThemeContext";
+import { useContext, useState } from "react";
+import { Divider } from "@nextui-org/react";
 
 function App() {
-
   // CRUD service that takes an array of expenses
   const expenseSvc = new MockExpenseService(expenses);
 
@@ -20,20 +21,25 @@ function App() {
   // use the summarizer on the expenses to return a summary
   const summary = expenseSummarizer.summarizeExpenses(expenseSvc.getExpenses());
 
-  return (
-    <div >
-      <Header />
+  const themeCtx = useContext(ThemeContext);
 
-      <Divider className="my-4 md:my-4" />
-      <div className="md:flex gap-4">
-        <ItemsTable
-          allExpenses={allExpenses}
-          expenseSvc={expenseSvc}
-          setAllExpenses={setAllExpenses}
-        />
-        <Summary summary={summary} />
+  console.log(themeCtx)
+  return (
+    <ThemeContextProvider>
+      <div id='dark'>
+        <Header toggleTheme={themeCtx.toggleTheme}/>
+
+        <Divider className="my-4 md:my-4" />
+        <div className="md:flex gap-4">
+          <ItemsTable
+            allExpenses={allExpenses}
+            expenseSvc={expenseSvc}
+            setAllExpenses={setAllExpenses}
+          />
+          <Summary summary={summary} />
+        </div>
       </div>
-    </div>
+    </ThemeContextProvider>
   );
 }
 

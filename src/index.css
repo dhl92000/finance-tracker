@@ -70,3 +70,11 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+
+#light {
+  background-color: 'white';
+}
+
+#dark {
+  background-color: #121212;
+}
