@@ -6,8 +6,8 @@ import Header from "./components/Header";
 import ItemsTable from "./pages/ItemsTable";
 import Summary from "./components/Summary";
 import ThemeContext from "./store/ThemeContext";
-import { ThemeContextProvider } from "./store/ThemeContext";
-import { useContext, useState } from "react";
+// import { ThemeContextProvider } from "./store/ThemeContext";
+import { useContext,  useState } from "react";
 import { Divider } from "@nextui-org/react";
 
 function App() {
@@ -23,12 +23,9 @@ function App() {
 
   const themeCtx = useContext(ThemeContext);
 
-  console.log(themeCtx)
   return (
-    <ThemeContextProvider>
-      <div id='dark'>
+      <div id={themeCtx.theme}>
         <Header toggleTheme={themeCtx.toggleTheme}/>
-
         <Divider className="my-4 md:my-4" />
         <div className="md:flex gap-4">
           <ItemsTable
@@ -39,7 +36,6 @@ function App() {
           <Summary summary={summary} />
         </div>
       </div>
-    </ThemeContextProvider>
   );
 }
 

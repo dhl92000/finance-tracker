@@ -10,6 +10,7 @@ const Switch = ({toggleTheme}) => {
     return (
         <div className="themeSwitch">
             <img src={moon}/>
+            
             <label className="switch">
                 <input type="checkbox" onChange={toggleTheme}/>
                 <span className="slider"></span>

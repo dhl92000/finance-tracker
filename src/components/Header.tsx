@@ -1,7 +1,11 @@
 import logo from '../UI/price_check_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.svg'
 import Switch from '../UI/Switch';
 
-const Header = ({toggleTheme}) => {
+interface HeaderProps {
+  toggleTheme: () => void;
+}
+
+const Header = ({toggleTheme}: HeaderProps) => {
   return (
     <div className='flex'>
       <img src={logo}/>
