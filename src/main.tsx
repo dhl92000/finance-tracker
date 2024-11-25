@@ -7,9 +7,11 @@ import { ThemeContextProvider } from "./store/ThemeContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <NextUIProvider validationBehavior='native'>
+    <NextUIProvider validationBehavior="native">
       <ThemeContextProvider>
-      <App />
+        {/* <main className="dark text-foreground bg-background"> */}
+          <App />
+        {/* </main> */}
       </ThemeContextProvider>
     </NextUIProvider>
   </StrictMode>
