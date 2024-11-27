@@ -1,6 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import { ReactNode } from "react";
 
+// type Theme = 'light' | 'dark'
+
 const ThemeContext = createContext({
     theme: 'light',
     toggleTheme: () => {}
@@ -20,13 +22,18 @@ export function ThemeContextProvider({children}: {children: ReactNode}) {
     }, []);
 
     useEffect(() => {
+        console.log(document.documentElement.classList)
+        // if there are any light/dark classes initially, we remove it
+        // then add class of 'theme' ?
         document.documentElement.classList.remove('light', 'dark');
         document.documentElement.classList.add(theme);
         localStorage.setItem('theme', theme);
+        console.log(localStorage)
     }, [theme]);
 
     function toggleTheme () {
         // console.log('toggling')
+        // console.log(document.documentElement.classList)
         setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
     }
 

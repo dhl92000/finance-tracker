@@ -40,7 +40,7 @@ const Summary = ({ summary }: SummaryProps) => {
                   <div className="text-4xl text-green-600">
                     {CurrencyFormatter.format(summary.totalMonthlySum)}
                   </div>{" "}
-                  Total Monthly
+                  Total Monthly Expenses
                 </p>
               </div>
               <h4 className="text-left font-medium mt-6">Categories</h4>
@@ -64,7 +64,7 @@ const Summary = ({ summary }: SummaryProps) => {
                 <div className="text-4xl text-green-600">
                   {CurrencyFormatter.format(summary.totalAnnualSum)}
                 </div>{" "}
-                Total Annual
+                Total Annual Expenses
               </p>
             </div>
             <h4 className="text-left font-medium mt-6">Categories</h4>

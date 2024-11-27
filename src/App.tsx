@@ -25,7 +25,7 @@ function App() {
 
   return (
       <div id={themeCtx.theme}>
-        <Header toggleTheme={themeCtx.toggleTheme}/>
+        <Header theme={themeCtx.theme} toggleTheme={themeCtx.toggleTheme}/>
         <Divider className="my-4 md:my-4" />
         <div className="md:flex gap-4">
           <ItemsTable
