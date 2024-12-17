@@ -9,7 +9,7 @@ export const expenses = [
   new Expense(6, "Dining Out", 200, "User", Frequency.Monthly, "entertainment"),
   new Expense(7, "Fitness Membership", 75, "User", Frequency.Monthly, "fitness"),
   new Expense(8, "Internet", 75, "User", Frequency.Monthly, "essential"),
-  new Expense(9, "Insurance (Home/Car)", 150, "User", Frequency.Monthly, "essential"),
+  new Expense(9, "Insurance (Home/Car)", 150, "User", Frequency.Yearly, "essential"),
   new Expense(10, "Childcare", 500, "User", Frequency.Monthly, "essential"),
   new Expense(11, "Pet Expenses", 100, "User", Frequency.Monthly, "pet"),
   new Expense(12, "Pilates", 400, "User", Frequency.Monthly, "fitness"),

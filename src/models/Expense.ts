@@ -7,6 +7,7 @@ export class Expense {
   owner: string;
   frequency: Frequency;
   category: string;
+  subcategories: any;
 
   constructor(
     id: number,
@@ -112,6 +113,7 @@ export class MockExpenseService {
 
   // delete
   deleteExpense(item: Expense) {
+    
     const indexToDelete = this.expenses.findIndex((el) => el.id === item.id);
     this.expenses.splice(indexToDelete, 1);
   }

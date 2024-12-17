@@ -9,9 +9,8 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <NextUIProvider validationBehavior="native">
       <ThemeContextProvider>
-        {/* <main className="dark text-foreground bg-background"> */}
           <App />
-        {/* </main> */}
+
       </ThemeContextProvider>
     </NextUIProvider>
   </StrictMode>

@@ -1,13 +1,14 @@
 import "./App.css";
 import { MockExpenseService, ExpenseSummarizer } from "./models/Expense";
 import { expenses } from "./data/Data";
-
 import Header from "./components/Header";
+
+import MainTable from "./pages/MainTable";
 import ItemsTable from "./pages/ItemsTable";
 import Summary from "./components/Summary";
 import ThemeContext from "./store/ThemeContext";
 // import { ThemeContextProvider } from "./store/ThemeContext";
-import { useContext,  useState } from "react";
+import { useContext, useState } from "react";
 import { Divider } from "@nextui-org/react";
 
 function App() {
@@ -24,18 +25,23 @@ function App() {
   const themeCtx = useContext(ThemeContext);
 
   return (
-      <div id={themeCtx.theme}>
-        <Header theme={themeCtx.theme} toggleTheme={themeCtx.toggleTheme}/>
-        <Divider className="my-4 md:my-4" />
-        <div className="md:flex gap-4">
-          <ItemsTable
-            allExpenses={allExpenses}
-            expenseSvc={expenseSvc}
-            setAllExpenses={setAllExpenses}
-          />
-          <Summary summary={summary} />
-        </div>
+    <div>
+      <Header theme={themeCtx.theme} toggleTheme={themeCtx.toggleTheme} />
+      <Divider className="my-4 md:my-4" />
+      <div className="md:flex gap-4">
+      <MainTable
+        allExpenses={allExpenses}
+        expenseSvc={expenseSvc}
+        setAllExpenses={setAllExpenses}
+      />
+        {/* <ItemsTable
+          allExpenses={allExpenses}
+          expenseSvc={expenseSvc}
+          setAllExpenses={setAllExpenses}
+        /> */}
+        <Summary summary={summary} />
       </div>
+    </div>
   );
 }
 

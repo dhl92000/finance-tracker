@@ -1,4 +1,4 @@
-import { Card, CardBody } from "@nextui-org/card";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Tabs, Tab } from "@nextui-org/tabs";
 import CategoryItem from "../components/CategoryItem";
 import { CurrencyFormatter } from "../util/CurrencyFormatter";
@@ -28,20 +28,16 @@ const Summary = ({ summary }: SummaryProps) => {
 
   return (
     <div className="md:w-2/5 ">
-      <h4 className="text-left my-4 tracking-wide font-semibold">
-        Financial Summary
-      </h4>
-      <Tabs aria-label="Expenses Summary">
-        <Tab title="Monthly">
-          <Card className="p-6 md:p-8">
-            <CardBody>
-              <div className="text-left font-medium">
-                <p>
-                  <div className="text-4xl text-green-600">
-                    {CurrencyFormatter.format(summary.totalMonthlySum)}
-                  </div>{" "}
-                  Total Monthly Expenses
-                </p>
+      <Card className="md:p-4">
+        <CardBody>
+          <CardHeader className="text-4xl mb-4">Financial Summary</CardHeader>
+          <Tabs aria-label="Expenses Summary">
+            <Tab title="Monthly">
+              <div className="text-left">
+                <div className="text-5xl text-green-600 font-semibold mt-4">
+                  {CurrencyFormatter.format(summary.totalMonthlySum)}
+                </div>
+                <p className="font-thin">Total Monthly Expenses</p>
               </div>
               <h4 className="text-left font-medium mt-6">Categories</h4>
               {sortedCategories.map((item, index) => (
@@ -52,22 +48,16 @@ const Summary = ({ summary }: SummaryProps) => {
                   itemPercentage={item.percentage}
                 />
               ))}
-            </CardBody>
-          </Card>
-        </Tab>
+            </Tab>
 
-        <Tab title="Yearly">
-          <Card className="p-6 md:p-8 ">
-            <CardBody>
-            <div className="text-left font-medium">
-              <p>
-                <div className="text-4xl text-green-600">
+            <Tab title="Yearly">
+              <div className="text-left">
+                <div className="text-5xl text-green-600 font-semibold mt-4">
                   {CurrencyFormatter.format(summary.totalAnnualSum)}
-                </div>{" "}
-                Total Annual Expenses
-              </p>
-            </div>
-            <h4 className="text-left font-medium mt-6">Categories</h4>
+                </div>
+                <p className="font-thin">Total Annual Expenses</p>
+              </div>
+              <h4 className="text-left font-medium mt-6">Categories</h4>
               {sortedCategories.map((item, index) => (
                 <CategoryItem
                   key={index}
@@ -76,10 +66,10 @@ const Summary = ({ summary }: SummaryProps) => {
                   itemPercentage={item.percentage}
                 />
               ))}
-            </CardBody>
-          </Card>
-        </Tab>
-      </Tabs>
+            </Tab>
+          </Tabs>
+        </CardBody>
+      </Card>
     </div>
   );
 };

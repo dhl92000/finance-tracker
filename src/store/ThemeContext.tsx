@@ -22,13 +22,12 @@ export function ThemeContextProvider({children}: {children: ReactNode}) {
     }, []);
 
     useEffect(() => {
-        console.log(document.documentElement.classList)
         // if there are any light/dark classes initially, we remove it
         // then add class of 'theme' ?
         document.documentElement.classList.remove('light', 'dark');
         document.documentElement.classList.add(theme);
+        // console.log(document.documentElement.classList)
         localStorage.setItem('theme', theme);
-        console.log(localStorage)
     }, [theme]);
 
     function toggleTheme () {
@@ -41,7 +40,6 @@ export function ThemeContextProvider({children}: {children: ReactNode}) {
         theme: theme,
         toggleTheme: toggleTheme
     }
-
 
     return (
         <ThemeContext.Provider value={themeContext}>
