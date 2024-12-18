@@ -39,7 +39,7 @@ const Summary = ({ summary }: SummaryProps) => {
                 </div>
                 <p className="font-thin">Total Monthly Expenses</p>
               </div>
-              <h4 className="text-left font-medium mt-6">Categories</h4>
+              <h4 className="mt-6">Categories</h4>
               {sortedCategories.map((item, index) => (
                 <CategoryItem
                   key={index}

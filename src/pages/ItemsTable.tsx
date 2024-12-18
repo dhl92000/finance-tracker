@@ -1,6 +1,6 @@
 import { Button } from "@nextui-org/react";
 import { Chip } from "@nextui-org/chip";
-import { Card, CardBody } from "@nextui-org/card";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { DeleteIcon } from "../data/DeleteIcon";
 import { EditIcon } from "../data/EditIcon";
 import expenseColumns from "../data/ExpenseColumns";
@@ -19,6 +19,7 @@ import { Tabs, Tab } from "@nextui-org/tabs";
 import { useCallback } from "react";
 import { PlusIcon } from "../data/PlusIcon";
 import { useDisclosure } from "@nextui-org/react";
+import { CurrencyFormatter } from "../util/CurrencyFormatter";
 import NewExpenseModal from "../components/NewExpenseModal";
 import UpdateExpenseModal from "../components/UpdateExpenseModal";
 import { useState } from "react";
@@ -55,43 +56,51 @@ const ItemsTable = ({
   // }, [columnItem]);
 
   // Custom cell for properties, monthly/yearly value, and actions
-  const renderCell = useCallback(
-    (item: Expense, columnKey: string | number) => {
-      const cellValue = item[columnKey as keyof Expense];
+  const renderCell = useCallback((item: Expense, colKey: string | number) => {
+    const cellValue = item[colKey as keyof Expense];
 
-      switch (columnKey) {
-        case "frequency":
-          if (cellValue === 12) {
-            return "Yearly";
-          } else {
-            return "Monthly";
-          }
-          break;
+    switch (colKey) {
+      case "amount":
+        return CurrencyFormatter.format(item.amount);
+        break;
+      case "frequency":
+        if (cellValue === 12) {
+          return "Yearly";
+        } else {
+          return "Monthly";
+        }
+        break;
+      case "actions":
+        return (
+          <div className="relative flex items-center gap-2">
+            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <EditIcon
+                data-testid="edit-icon"
+                onClick={() => openUpdateModal(item)}
+              />
+            </span>
+            <span className="text-lg text-danger cursor-pointer active:opacity-50">
+              <DeleteIcon
+                data-testid="delete-icon"
+                onClick={() => handleDelete(item)}
+              />
+            </span>
+          </div>
+        );
+        break;
+      case "category":
+        return (
+          <Chip color="warning" variant="flat">
+            {item.category}
+          </Chip>
+        );
+        break;
+      default:
+        return cellValue;
+    }
+  }, []);
 
-        case "actions":
-          return (
-            <div className="relative flex items-center gap-2">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon
-                  data-testid="edit-icon"
-                  onClick={() => openUpdateModal(item)}
-                />
-              </span>
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon
-                  data-testid="delete-icon"
-                  onClick={() => handleDelete(item)}
-                />
-              </span>
-            </div>
-          );
-        default:
-          return cellValue;
-      }
-    },
-    []
-  );
-
+  
   const newExpenseModal = (
     <>
       <Button
@@ -113,9 +122,16 @@ const ItemsTable = ({
     </>
   );
 
+  const columns = [
+    { key: "label", label: "ITEM" },
+    { key: "amount", label: "AMOUNT" },
+    { key: "frequency", label: "FREQUENCY" },
+    { key: "category", label: "CATEGORY" },
+    { key: "actions", label: "ACTIONS" }
+  ];
+
   return (
     <div className="flex w-full flex-col md:w-3/5">
-      {/* Expenses Tab */}
       <UpdateExpenseModal
         columnItem={columnItem}
         isOpen={updateDisclosure.isOpen}
@@ -124,48 +140,53 @@ const ItemsTable = ({
         expenseSvc={expenseSvc}
         setAllExpenses={setAllExpenses}
       />
-
-      <h4 className="text-left my-4 tracking-wide text-lg">Expenses</h4>
-      <Tabs aria-label="Complete expenses table">
-        <Tab title="Expenses">
-          <Table
-            aria-label="Expenses Table content"
-            topContent={newExpenseModal}
-          >
-            
-            <TableHeader columns={expenseColumns}>
-              <>
-                {expenseColumns.map((column) => (
-                  <TableColumn key={column.key}>{column.label}</TableColumn>
-                ))}
-              </>
-            </TableHeader>
-            <TableBody>
-              {allExpenses.map((row) => (
-                <TableRow key={row.id}>
-                  {(columnKey) => (
-                    <TableCell>{renderCell(row, columnKey)}</TableCell>
+      <Card className="md:p-4">
+        <CardBody>
+          <CardHeader className="text-4xl mb-4">Expenses</CardHeader>
+          {/* <h4 className="text-left m-4 tracking-wide text-lg">Expenses</h4> */}
+          <Tabs className="tabs">
+            <Tab title="Expenses">
+              <Table
+                aria-label="All Expense Items Table"
+                removeWrapper
+                topContent={newExpenseModal}
+              >
+                <TableHeader columns={columns}>
+                  {(col) => (
+                    <TableColumn key={col.key}>{col.label}</TableColumn>
                   )}
-                </TableRow>
-              ))}
+                </TableHeader>
 
-              {/* <TableRow key={25}><TableCell><Chip>Hi</Chip></TableCell></TableRow> */}
-            </TableBody>
-          </Table>
-        </Tab>
+                <TableBody items={allExpenses}>
+                  {(item) => (
+                    <TableRow key={item.id}>
+                      {(colKey) => (
+                        <TableCell>{renderCell(item, colKey)}</TableCell>
+                      )}
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </Tab>
+            {/* Income Tab */}
+            <Tab title="Income">
+              <Table aria-label="All Income Items Table">
+                <TableHeader>
+                  <TableColumn>Column 1</TableColumn>
+                  <TableColumn>Column 2</TableColumn>
+                  <TableColumn>Column 3</TableColumn>
+                  <TableColumn>Column 4</TableColumn>
+                  <TableColumn>Column 5</TableColumn>
+                </TableHeader>
 
-        {/* Income Tab */}
-        <Tab title="Income">
-          <Card aria-label="Income card content">
-            <CardBody>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur.
-            </CardBody>
-          </Card>
-        </Tab>
-      </Tabs>
+                <TableBody emptyContent={"No rows to display."}>
+
+                </TableBody>
+              </Table>
+            </Tab>
+          </Tabs>
+        </CardBody>
+      </Card>
     </div>
   );
 };
