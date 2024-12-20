@@ -3,12 +3,11 @@ import { Chip } from "@nextui-org/chip";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { DeleteIcon } from "../data/DeleteIcon";
 import { EditIcon } from "../data/EditIcon";
-import {useAsyncList} from "@react-stately/data";
 import { Expense, MockExpenseService } from "../models/Expense";
 
 // sortDescriptor add to table
 // map of colours with {'category': '#hexcode'}
-// if map has category, return colour 
+// if map has category, return colour
 // if not, create a random colour (or pick from colours)
 import {
   Table,
@@ -27,19 +26,18 @@ import NewExpenseModal from "../components/NewExpenseModal";
 import UpdateExpenseModal from "../components/UpdateExpenseModal";
 import { useState } from "react";
 
-
 interface ItemsTableProps {
   allExpenses: Expense[];
   expenseSvc: MockExpenseService;
   setAllExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
-  categoryColors: {[key:string]: string}
+  categoryColors: { [key: string]: string };
 }
 
 const ItemsTable = ({
   allExpenses,
   expenseSvc,
   setAllExpenses,
-  categoryColors
+  categoryColors,
 }: ItemsTableProps) => {
   const updateDisclosure = useDisclosure();
   const newDisclosure = useDisclosure();
@@ -58,58 +56,60 @@ const ItemsTable = ({
   };
 
   // Custom cell for properties, monthly/yearly value, and actions
-  const renderCell = useCallback((item: Expense, colKey: string | number) => {
-    const cellValue = item[colKey as keyof Expense];
-    let color 
+  const renderCell = useCallback(
+    (item: Expense, colKey: string | number) => {
+      const cellValue = item[colKey as keyof Expense];
+      let color;
 
-    // state passed as props in useCallback is showing undefined ()
-    //this shows as undefined
-    // console.log(color)
-    //console.log(categoryColors[0])
-    
-    switch (colKey) {
-      case "amount":
-        return CurrencyFormatter.format(item.amount);
-        break;
-      case "frequency":
-        if (cellValue === 12) {
-          return "Yearly";
-        } else {
-          return "Monthly";
-        }
-        break;
-      case "actions":
-        return (
-          <div className="relative flex items-center gap-2">
-            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-              <EditIcon
-                data-testid="edit-icon"
-                onClick={() => openUpdateModal(item)}
-              />
-            </span>
-            <span className="text-lg text-danger cursor-pointer active:opacity-50">
-              <DeleteIcon
-                data-testid="delete-icon"
-                onClick={() => handleDelete(item)}
-              />
-            </span>
-          </div>
-        );
-        break;
-      case "category":
-        color = categoryColors[item.category]
-        return (
-          <Chip  variant="flat" className={color}>
-            {item.category}
-          </Chip>
-        );
-        break;
-      default:
-        return cellValue;
-    }
-  }, [categoryColors]);
+      // state passed as props in useCallback is showing undefined ()
+      //this shows as undefined
+      // console.log(color)
+      //console.log(categoryColors[0])
 
-  
+      switch (colKey) {
+        case "amount":
+          return CurrencyFormatter.format(item.amount);
+          break;
+        case "frequency":
+          if (cellValue === 12) {
+            return "Yearly";
+          } else {
+            return "Monthly";
+          }
+          break;
+        case "actions":
+          return (
+            <div className="relative flex items-center gap-2">
+              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                <EditIcon
+                  data-testid="edit-icon"
+                  onClick={() => openUpdateModal(item)}
+                />
+              </span>
+              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                <DeleteIcon
+                  data-testid="delete-icon"
+                  onClick={() => handleDelete(item)}
+                />
+              </span>
+            </div>
+          );
+          break;
+        case "category":
+          color = categoryColors[item.category];
+          return (
+            <Chip variant="flat" className={color}>
+              {item.category}
+            </Chip>
+          );
+          break;
+        default:
+          return cellValue;
+      }
+    },
+    [categoryColors]
+  );
+
   const newExpenseModal = (
     <>
       <Button
@@ -118,7 +118,6 @@ const ItemsTable = ({
         className="bg-foreground text-background bg-emerald-500	"
         endContent={<PlusIcon />}
         size="sm"
-
       >
         Add New
       </Button>
@@ -137,36 +136,36 @@ const ItemsTable = ({
     { key: "amount", label: "AMOUNT", sortable: true },
     { key: "frequency", label: "FREQUENCY", sortable: true },
     { key: "category", label: "CATEGORY", sortable: true },
-    { key: "actions", label: "ACTIONS" }
+    { key: "actions", label: "ACTIONS" },
   ];
 
-  // options: load.For fetching data
-  // sort.For sorting data 
-  const list = useAsyncList({
-    async load() {
-      return { items: allExpenses };
-    },
-    sort({items, sortDescriptor}){
-//      console.log(sortDescriptor) {column: 'amount', direction: 'ascending'}
-    return {
-        items: items.sort((a, b) => {
+  const [sortedExpenses, setSortedExpenses] = useState({
+    items: allExpenses,
+    sortDescriptor: { direction: "descending", column: "key" },
+  });
 
-          const first = a[sortDescriptor.column]
-          const second = b[sortDescriptor.column]
-          
-          let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+  function sortAllExpenses() {
+    const { items, sortDescriptor } = sortedExpenses;
 
-          if (sortDescriptor.direction === "descending") {
-            cmp *= -1;
-          }
-
-          return cmp;
-        })
+    items.sort((a, b) => {
+      let first = a[sortDescriptor.column];
+      let second = b[sortDescriptor.column];
+      let cmp =
+        (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+      if (sortDescriptor.direction === "descending") {
+        cmp *= -1;
       }
-    }
-  })
+      return cmp;
+    });
 
-
+    setSortedExpenses({
+      items,
+      sortDescriptor:
+        sortDescriptor.direction === "ascending"
+          ? { direction: "descending", column: "key" }
+          : { direction: "ascending", column: "key" },
+    });
+  }
 
   return (
     <div className="flex w-full flex-col mb-4 md:w-3/5">
@@ -188,22 +187,18 @@ const ItemsTable = ({
                 aria-label="All Expense Items Table"
                 removeWrapper
                 topContent={newExpenseModal}
-                // defines current col key + direction
-                //sortdescriptor is a property 
-                sortDescriptor={list.sortDescriptor}
-                // col key + sort descriptor is passed into onSortChange, which updates sortDescriptor
-                onSortChange={list.sort}
-                classNames={{
-                  wrapper: "min-h-[222px]",
-                }}
+                onSortChange={sortAllExpenses}
+                sortDescriptor={sortedExpenses.sortDescriptor}
               >
                 <TableHeader columns={columns}>
                   {(col) => (
                     <TableColumn key={col.key} allowsSorting={col.sortable}>{col.label}</TableColumn>
+                    //<TableColumn key={col.key}>{col.label}</TableColumn>
                   )}
                 </TableHeader>
-                <TableBody items={list.items}>
-                {/* <TableBody items={allExpenses}> */}
+                <TableBody items={sortedExpenses.items}>
+                  {/* <TableBody items={list.items}> */}
+                  {/* <TableBody items={allExpenses}> */}
                   {(item) => (
                     <TableRow key={item.id}>
                       {(colKey) => (
@@ -225,9 +220,7 @@ const ItemsTable = ({
                   <TableColumn>Column 5</TableColumn>
                 </TableHeader>
 
-                <TableBody emptyContent={"No rows to display."}>
-
-                </TableBody>
+                <TableBody emptyContent={"No rows to display."}></TableBody>
               </Table>
             </Tab>
           </Tabs>
