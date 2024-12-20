@@ -5,13 +5,11 @@ import { DeleteIcon } from "../data/DeleteIcon";
 import { EditIcon } from "../data/EditIcon";
 import {useAsyncList} from "@react-stately/data";
 import { Expense, MockExpenseService } from "../models/Expense";
-import { useEffect } from "react";
+
 // sortDescriptor add to table
 // map of colours with {'category': '#hexcode'}
 // if map has category, return colour 
 // if not, create a random colour (or pick from colours)
-
-
 import {
   Table,
   TableHeader,
@@ -23,7 +21,7 @@ import {
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { useCallback } from "react";
 import { PlusIcon } from "../data/PlusIcon";
-import { useDisclosure } from "@nextui-org/react";
+import { useDisclosure, Pagination } from "@nextui-org/react";
 import { CurrencyFormatter } from "../util/CurrencyFormatter";
 import NewExpenseModal from "../components/NewExpenseModal";
 import UpdateExpenseModal from "../components/UpdateExpenseModal";
@@ -46,13 +44,13 @@ const ItemsTable = ({
   const updateDisclosure = useDisclosure();
   const newDisclosure = useDisclosure();
 
+  const [columnItem, setColumnItem] = useState<Expense | undefined>(undefined);
+
   const handleDelete = (item: Expense) => {
     expenseSvc.deleteExpense(item);
     const data = expenseSvc.getExpenses();
     setAllExpenses([...data]);
   };
-
-  const [columnItem, setColumnItem] = useState<Expense | undefined>(undefined);
 
   const openUpdateModal = (item: Expense) => {
     setColumnItem(item);
@@ -62,11 +60,11 @@ const ItemsTable = ({
   // Custom cell for properties, monthly/yearly value, and actions
   const renderCell = useCallback((item: Expense, colKey: string | number) => {
     const cellValue = item[colKey as keyof Expense];
-    const color = categoryColors[item.category]
+    let color 
 
     // state passed as props in useCallback is showing undefined ()
     //this shows as undefined
-    //console.log(color)
+    // console.log(color)
     //console.log(categoryColors[0])
     
     switch (colKey) {
@@ -99,6 +97,7 @@ const ItemsTable = ({
         );
         break;
       case "category":
+        color = categoryColors[item.category]
         return (
           <Chip  variant="flat" className={color}>
             {item.category}
@@ -134,12 +133,40 @@ const ItemsTable = ({
   );
 
   const columns = [
-    { key: "label", label: "ITEM" },
-    { key: "amount", label: "AMOUNT" },
-    { key: "frequency", label: "FREQUENCY" },
-    { key: "category", label: "CATEGORY" },
+    { key: "label", label: "ITEM", sortable: true },
+    { key: "amount", label: "AMOUNT", sortable: true },
+    { key: "frequency", label: "FREQUENCY", sortable: true },
+    { key: "category", label: "CATEGORY", sortable: true },
     { key: "actions", label: "ACTIONS" }
   ];
+
+  // options: load.For fetching data
+  // sort.For sorting data 
+  const list = useAsyncList({
+    async load() {
+      return { items: allExpenses };
+    },
+    sort({items, sortDescriptor}){
+//      console.log(sortDescriptor) {column: 'amount', direction: 'ascending'}
+    return {
+        items: items.sort((a, b) => {
+
+          const first = a[sortDescriptor.column]
+          const second = b[sortDescriptor.column]
+          
+          let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+
+          if (sortDescriptor.direction === "descending") {
+            cmp *= -1;
+          }
+
+          return cmp;
+        })
+      }
+    }
+  })
+
+
 
   return (
     <div className="flex w-full flex-col mb-4 md:w-3/5">
@@ -161,14 +188,22 @@ const ItemsTable = ({
                 aria-label="All Expense Items Table"
                 removeWrapper
                 topContent={newExpenseModal}
+                // defines current col key + direction
+                //sortdescriptor is a property 
+                sortDescriptor={list.sortDescriptor}
+                // col key + sort descriptor is passed into onSortChange, which updates sortDescriptor
+                onSortChange={list.sort}
+                classNames={{
+                  wrapper: "min-h-[222px]",
+                }}
               >
                 <TableHeader columns={columns}>
                   {(col) => (
-                    <TableColumn key={col.key}>{col.label}</TableColumn>
+                    <TableColumn key={col.key} allowsSorting={col.sortable}>{col.label}</TableColumn>
                   )}
                 </TableHeader>
-
-                <TableBody items={allExpenses}>
+                <TableBody items={list.items}>
+                {/* <TableBody items={allExpenses}> */}
                   {(item) => (
                     <TableRow key={item.id}>
                       {(colKey) => (

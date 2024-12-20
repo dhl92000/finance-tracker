@@ -24,7 +24,7 @@ function App() {
   const themeCtx = useContext(ThemeContext);
 
   const [categoryColors, setCategoryColors] = useState({})
-
+ 
   useEffect(() => {
     const colors = [
       'bg-mint1',
@@ -35,13 +35,17 @@ function App() {
       'bg-yellow3',
     ];
     const colorMap: { [key: string]: string } = {};
+
     summary.byCategory.forEach((category, index) => {
       colorMap[category.category] = colors[index % colors.length];
     });
 
     setCategoryColors(colorMap);
-  }, [summary.byCategory]);
+    // console.log(colorMap)
+  }, [allExpenses]);
+  //summary.byCategory
 
+  
   return (
     <div>
       <Header theme={themeCtx.theme} toggleTheme={themeCtx.toggleTheme} />
