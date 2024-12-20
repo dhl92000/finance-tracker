@@ -104,7 +104,6 @@ const ItemsTable = ({
             {item.category}
           </Chip>
         );
-        // return (renderChip(color, item))
         break;
       default:
         return cellValue;

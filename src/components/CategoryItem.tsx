@@ -7,12 +7,12 @@ interface CategoryItemProps {
   itemCategory: string;
   itemSum: number;
   itemPercentage: number;
-  key: number;
+  // key: number;
   color: string
 }
 
 const CategoryItem = ({
-  key,
+  // key,
   itemCategory,
   itemSum,
   itemPercentage,
@@ -29,7 +29,8 @@ const CategoryItem = ({
   }
 
   return (
-    <div key={key} className="flex my-2 gap-4">
+    // <div key={key} className="flex my-2 gap-4">
+    <div className="flex my-2 gap-4">
 
       <div className="flex-none">
         <Chip variant="flat" className={color}>{categoryName}</Chip>
