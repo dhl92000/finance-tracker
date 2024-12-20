@@ -6,7 +6,6 @@ export class Expense {
   owner: string;
   frequency: Frequency;
   category: string;
-  color: string
 
   constructor(
     id: number,
@@ -15,7 +14,6 @@ export class Expense {
     owner: string,
     frequency: Frequency,
     category: string,
-    color: string
   ) {
     this.id = id;
     this.label = label;
@@ -23,7 +21,6 @@ export class Expense {
     this.owner = owner;
     this.frequency = frequency;
     this.category = category;
-    this.color = color
   }
 }
 
@@ -68,7 +65,6 @@ export class MockExpenseService {
     owner: string;
     frequency: Frequency;
     category: string;
-    color: string
   }) {
     // Radio group creates frequency as a string
     if (Number.isNaN(data["amount"]) || data.amount < 0) {
@@ -88,7 +84,6 @@ export class MockExpenseService {
       data.owner,
       data.frequency,
     data.category.toLowerCase(),
-    'bg-gray-300'
     );
     this.expenses.push(newExpense);
   }
@@ -109,7 +104,6 @@ export class MockExpenseService {
       owner: data.owner,
       frequency: data.frequency,
       category: data.category,
-      color: data.color
     };
   }
 

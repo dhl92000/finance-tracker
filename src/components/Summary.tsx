@@ -22,11 +22,8 @@ interface SummaryProps {
 const Summary = ({ summary, categoryColors }: SummaryProps) => {
   const [sortedCategories, setSortedCategories] = useState<SummaryItem[]>([]);
 
-  // console.log(categoryColors)
   useEffect(() => {
     const sorted = summary.byCategory.sort((a, b) => b.sum - a.sum);
-    // colors = {category: color}
-    // itemColor = colors[item.category]
     setSortedCategories(sorted);
   }, [summary.byCategory]);
 

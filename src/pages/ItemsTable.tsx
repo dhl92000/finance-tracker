@@ -59,35 +59,9 @@ const ItemsTable = ({
     updateDisclosure.onOpen();
   };
 
-  // useEffect(() => {
-  //   console.log(columnItem); // This will log the updated state
-  // }, [columnItem]);
-
-  //   useEffect(() => {
-  //   console.log(categoryColors[0]);
-  // }, []);
-
-  // console.log(categoryColors)
-
-  // function renderChip(color, item) {
-  //   return (
-  //     <Chip  variant="flat" className={color}>
-  //     {item.category}
-  //   </Chip>
-  //   )
-  // }
-
-  // categoryColors is state passed down from App.tsx.
-  // we can create a variable that hols the specific item's color, and then pass it ito the Chip in usecallback, but how?
-  // not undefined, but in useCallback, categoryColors is undefined
-  // console.log(categoryColors)
-
   // Custom cell for properties, monthly/yearly value, and actions
   const renderCell = useCallback((item: Expense, colKey: string | number) => {
     const cellValue = item[colKey as keyof Expense];
-    
-    //console.log(item.category)
-
     const color = categoryColors[item.category]
 
     // state passed as props in useCallback is showing undefined ()

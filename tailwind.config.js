@@ -12,15 +12,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-    //   colors: {
-    //     'mint1': '#E4EEEB',
-    //     'mint2': '#D6F0E2',
-    //     'mint3' : '#BFDBC8',
-    //     'yellow1': '#FFF6DB',
-    //     'yellow2': '#FFEAB8',
-    //     'yellow3': '#FFE8A4'
-    // }
-
     },
   },
   // darkMode: "class",
