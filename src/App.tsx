@@ -7,7 +7,7 @@ import ItemsTable from "./pages/ItemsTable";
 import Summary from "./components/Summary";
 import ThemeContext from "./store/ThemeContext";
 // import { ThemeContextProvider } from "./store/ThemeContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Divider } from "@nextui-org/react";
 
 function App() {
@@ -23,6 +23,25 @@ function App() {
 
   const themeCtx = useContext(ThemeContext);
 
+  const [categoryColors, setCategoryColors] = useState({})
+
+  useEffect(() => {
+    const colors = [
+      'bg-mint1',
+      'bg-mint2',
+      'bg-mint3',
+      'bg-yellow1',
+      'bg-yellow2',
+      'bg-yellow3',
+    ];
+    const colorMap: { [key: string]: string } = {};
+    summary.byCategory.forEach((category, index) => {
+      colorMap[category.category] = colors[index % colors.length];
+    });
+
+    setCategoryColors(colorMap);
+  }, [summary.byCategory]);
+
   return (
     <div>
       <Header theme={themeCtx.theme} toggleTheme={themeCtx.toggleTheme} />
@@ -32,8 +51,9 @@ function App() {
           allExpenses={allExpenses}
           expenseSvc={expenseSvc}
           setAllExpenses={setAllExpenses}
+          categoryColors={categoryColors}
         />
-        <Summary summary={summary} />
+        <Summary summary={summary} categoryColors={categoryColors}/>
       </div>
     </div>
   );

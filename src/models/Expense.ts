@@ -1,30 +1,29 @@
 export class Expense {
   // Properties
   id: number;
-
   label: string;
   amount: number;
   owner: string;
   frequency: Frequency;
   category: string;
-  subcategories: any;
+  color: string
 
   constructor(
     id: number,
-
     label: string,
     amount: number,
     owner: string,
     frequency: Frequency,
-    category: string
+    category: string,
+    color: string
   ) {
     this.id = id;
-
     this.label = label;
     this.amount = amount;
     this.owner = owner;
     this.frequency = frequency;
     this.category = category;
+    this.color = color
   }
 }
 
@@ -69,6 +68,7 @@ export class MockExpenseService {
     owner: string;
     frequency: Frequency;
     category: string;
+    color: string
   }) {
     // Radio group creates frequency as a string
     if (Number.isNaN(data["amount"]) || data.amount < 0) {
@@ -87,7 +87,8 @@ export class MockExpenseService {
       data.amount,
       data.owner,
       data.frequency,
-      data.category.toLowerCase()
+    data.category.toLowerCase(),
+    'bg-gray-300'
     );
     this.expenses.push(newExpense);
   }
@@ -107,7 +108,8 @@ export class MockExpenseService {
       amount: data.amount,
       owner: data.owner,
       frequency: data.frequency,
-      category: data.category.toLowerCase(),
+      category: data.category,
+      color: data.color
     };
   }
 
@@ -164,3 +166,7 @@ export class ExpenseSummarizer {
     };
   }
 }
+
+
+// create a category model {label: string, color: string} that goes in categories [] 
+// depending on the category, display string

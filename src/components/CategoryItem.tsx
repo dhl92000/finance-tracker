@@ -8,6 +8,7 @@ interface CategoryItemProps {
   itemSum: number;
   itemPercentage: number;
   key: number;
+  color: string
 }
 
 const CategoryItem = ({
@@ -15,11 +16,11 @@ const CategoryItem = ({
   itemCategory,
   itemSum,
   itemPercentage,
+  color
 }: CategoryItemProps) => {
+
   const categoryName = itemCategory[0].toUpperCase() + itemCategory.slice(1);
   let chipColour = "default";
-
-  //  grey, orange, dark orange itemPercentage > 10 : 'orange'
 
   if (itemPercentage > 10 && itemPercentage < 20) {
     chipColour = "text-background bg-green-500";
@@ -31,7 +32,7 @@ const CategoryItem = ({
     <div key={key} className="flex my-2 gap-4">
 
       <div className="flex-none">
-        <p>{categoryName}</p>
+        <Chip variant="flat" className={color}>{categoryName}</Chip>
       </div>
 
       <div className=" flex-grow text-right">{CurrencyFormatter.format(itemSum)}</div>

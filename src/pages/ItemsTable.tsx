@@ -1,12 +1,17 @@
-import { Button } from "@nextui-org/react";
+import { Button } from "@nextui-org/button";
 import { Chip } from "@nextui-org/chip";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { DeleteIcon } from "../data/DeleteIcon";
 import { EditIcon } from "../data/EditIcon";
-import expenseColumns from "../data/ExpenseColumns";
+import {useAsyncList} from "@react-stately/data";
 import { Expense, MockExpenseService } from "../models/Expense";
-// import { Input } from "@nextui-org/input";
-// import { RadioGroup, Radio } from "@nextui-org/radio";
+import { useEffect } from "react";
+// sortDescriptor add to table
+// map of colours with {'category': '#hexcode'}
+// if map has category, return colour 
+// if not, create a random colour (or pick from colours)
+
+
 import {
   Table,
   TableHeader,
@@ -24,16 +29,19 @@ import NewExpenseModal from "../components/NewExpenseModal";
 import UpdateExpenseModal from "../components/UpdateExpenseModal";
 import { useState } from "react";
 
+
 interface ItemsTableProps {
   allExpenses: Expense[];
   expenseSvc: MockExpenseService;
   setAllExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
+  categoryColors: {[key:string]: string}
 }
 
 const ItemsTable = ({
   allExpenses,
   expenseSvc,
   setAllExpenses,
+  categoryColors
 }: ItemsTableProps) => {
   const updateDisclosure = useDisclosure();
   const newDisclosure = useDisclosure();
@@ -55,10 +63,38 @@ const ItemsTable = ({
   //   console.log(columnItem); // This will log the updated state
   // }, [columnItem]);
 
+  //   useEffect(() => {
+  //   console.log(categoryColors[0]);
+  // }, []);
+
+  // console.log(categoryColors)
+
+  // function renderChip(color, item) {
+  //   return (
+  //     <Chip  variant="flat" className={color}>
+  //     {item.category}
+  //   </Chip>
+  //   )
+  // }
+
+  // categoryColors is state passed down from App.tsx.
+  // we can create a variable that hols the specific item's color, and then pass it ito the Chip in usecallback, but how?
+  // not undefined, but in useCallback, categoryColors is undefined
+  // console.log(categoryColors)
+
   // Custom cell for properties, monthly/yearly value, and actions
   const renderCell = useCallback((item: Expense, colKey: string | number) => {
     const cellValue = item[colKey as keyof Expense];
+    
+    //console.log(item.category)
 
+    const color = categoryColors[item.category]
+
+    // state passed as props in useCallback is showing undefined ()
+    //this shows as undefined
+    //console.log(color)
+    //console.log(categoryColors[0])
+    
     switch (colKey) {
       case "amount":
         return CurrencyFormatter.format(item.amount);
@@ -90,15 +126,16 @@ const ItemsTable = ({
         break;
       case "category":
         return (
-          <Chip color="warning" variant="flat">
+          <Chip  variant="flat" className={color}>
             {item.category}
           </Chip>
         );
+        // return (renderChip(color, item))
         break;
       default:
         return cellValue;
     }
-  }, []);
+  }, [categoryColors]);
 
   
   const newExpenseModal = (
@@ -109,6 +146,7 @@ const ItemsTable = ({
         className="bg-foreground text-background bg-emerald-500	"
         endContent={<PlusIcon />}
         size="sm"
+
       >
         Add New
       </Button>

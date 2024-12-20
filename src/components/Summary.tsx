@@ -16,13 +16,17 @@ interface SummaryProps {
     totalMonthlySum: number;
     totalAnnualSum: number;
   };
+  categoryColors: { [key: string]: string };
 }
 
-const Summary = ({ summary }: SummaryProps) => {
+const Summary = ({ summary, categoryColors }: SummaryProps) => {
   const [sortedCategories, setSortedCategories] = useState<SummaryItem[]>([]);
 
+  // console.log(categoryColors)
   useEffect(() => {
     const sorted = summary.byCategory.sort((a, b) => b.sum - a.sum);
+    // colors = {category: color}
+    // itemColor = colors[item.category]
     setSortedCategories(sorted);
   }, [summary.byCategory]);
 
@@ -46,6 +50,7 @@ const Summary = ({ summary }: SummaryProps) => {
                   itemCategory={item.category}
                   itemSum={item.sum}
                   itemPercentage={item.percentage}
+                  color={categoryColors[item.category]}
                 />
               ))}
             </Tab>
@@ -64,6 +69,7 @@ const Summary = ({ summary }: SummaryProps) => {
                   itemCategory={item.category}
                   itemSum={item.sum * 12}
                   itemPercentage={item.percentage}
+                  color={categoryColors[item.category]}
                 />
               ))}
             </Tab>
