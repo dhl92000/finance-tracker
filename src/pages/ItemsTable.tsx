@@ -142,7 +142,7 @@ const ItemsTable = ({
   ];
 
   return (
-    <div className="flex w-full flex-col md:w-3/5">
+    <div className="flex w-full flex-col mb-4 md:w-3/5">
       <UpdateExpenseModal
         columnItem={columnItem}
         isOpen={updateDisclosure.isOpen}

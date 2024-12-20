@@ -46,7 +46,7 @@ function App() {
     <div>
       <Header theme={themeCtx.theme} toggleTheme={themeCtx.toggleTheme} />
       <Divider className="my-4 md:my-4" />
-      <div className="md:flex gap-4">
+      <div className=" md:flex md:gap-4">
         <ItemsTable
           allExpenses={allExpenses}
           expenseSvc={expenseSvc}
