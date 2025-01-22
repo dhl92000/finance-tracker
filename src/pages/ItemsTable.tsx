@@ -20,7 +20,7 @@ import {
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { useCallback } from "react";
 import { PlusIcon } from "../data/PlusIcon";
-import { useDisclosure, Pagination } from "@nextui-org/react";
+import { useDisclosure} from "@nextui-org/react";
 import { CurrencyFormatter } from "../util/CurrencyFormatter";
 import NewExpenseModal from "../components/NewExpenseModal";
 import UpdateExpenseModal from "../components/UpdateExpenseModal";
