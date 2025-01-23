@@ -44,23 +44,23 @@ const ItemsTable = ({
 
   const [columnItem, setColumnItem] = useState<Expense | undefined>(undefined);
 
-  const handleDelete = (item: Expense) => {
-    expenseSvc.deleteExpense(item);
-    const data = expenseSvc.getExpenses();
-    setAllExpenses([...data]);
-  };
 
-  const openUpdateModal = (item: Expense) => {
-    setColumnItem(item);
-    updateDisclosure.onOpen();
-  };
 
   // Custom cell for properties, monthly/yearly value, and actions
   const renderCell = useCallback(
     (item: Expense, colKey: string | number) => {
       const cellValue = item[colKey as keyof Expense];
       let color;
-
+      const handleDelete = (item: Expense) => {
+        expenseSvc.deleteExpense(item);
+        const data = expenseSvc.getExpenses();
+        setAllExpenses([...data]);
+      };
+    
+      const openUpdateModal = (item: Expense) => {
+        setColumnItem(item);
+        updateDisclosure.onOpen();
+      };
       // state passed as props in useCallback is showing undefined ()
       //this shows as undefined
       // console.log(color)
@@ -107,7 +107,7 @@ const ItemsTable = ({
           return cellValue;
       }
     },
-    [categoryColors]
+    [categoryColors, expenseSvc, setAllExpenses, updateDisclosure]
   );
 
   const newExpenseModal = (
@@ -139,19 +139,24 @@ const ItemsTable = ({
     { key: "actions", label: "ACTIONS" },
   ];
 
-  const [sortedExpenses, setSortedExpenses] = useState({
+  const [sortedExpenses, setSortedExpenses] = useState<{
+    items: Expense[];
+    sortDescriptor: { direction: "ascending" | "descending"; column: string };
+  }>({
     items: allExpenses,
     sortDescriptor: { direction: "descending", column: "key" },
   });
 
+
+
   function sortAllExpenses() {
     const { items, sortDescriptor } = sortedExpenses;
-
+    
     items.sort((a, b) => {
-      let first = a[sortDescriptor.column];
-      let second = b[sortDescriptor.column];
+      const first = a[sortDescriptor.column as keyof Expense];
+      const second = b[sortDescriptor.column as keyof Expense];
       let cmp =
-        (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+        (parseInt(first as string) || first) < (parseInt(second as string) || second) ? -1 : 1;
       if (sortDescriptor.direction === "descending") {
         cmp *= -1;
       }
@@ -182,7 +187,7 @@ const ItemsTable = ({
           <CardHeader className="text-4xl mb-4">Expenses</CardHeader>
           {/* <h4 className="text-left m-4 tracking-wide text-lg">Expenses</h4> */}
           <Tabs className="tabs">
-            <Tab title="Expenses">
+            <Tab title="Expenses" data-testid='expensesTitle'>
               <Table
                 aria-label="All Expense Items Table"
                 removeWrapper
@@ -220,7 +225,10 @@ const ItemsTable = ({
                   <TableColumn>Column 5</TableColumn>
                 </TableHeader>
 
-                <TableBody emptyContent={"No rows to display."}></TableBody>
+                <TableBody emptyContent={"No rows to display."}>
+                  {/* Add children here if needed */}
+                  {[]}
+                </TableBody>
               </Table>
             </Tab>
           </Tabs>

@@ -42,7 +42,7 @@ function App() {
 
     setCategoryColors(colorMap);
     // console.log(colorMap)
-  }, [allExpenses]);
+  }, [allExpenses, summary.byCategory]);
   //summary.byCategory
 
   
